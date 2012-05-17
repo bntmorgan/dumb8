@@ -43,8 +43,6 @@ end banc_registres;
 architecture Behavioral of banc_registres is
   type register_array is array (0 to 11) of STD_LOGIC_VECTOR (7 downto 0);
   signal registres : register_array;
-  signal sortieA : STD_LOGIC_VECTOR (7 downto 0);
-  signal sortieB : STD_LOGIC_VECTOR (7 downto 0);
 begin
   process(CLK)
   begin
@@ -56,18 +54,18 @@ begin
         -- Ecriture et lecture simultanees
         if W='1' and Adr_A = Adr_W then
           registres(conv_integer(Adr_W)) <= DATA;
-          sortieA <= DATA;
+          QA <= DATA;
         else 
           if W='1' and Adr_B = Adr_W then
             registres(conv_integer(Adr_W)) <= DATA;
-            sortieB <= DATA;
+            QB <= DATA;
           else
             if W='1' then
               registres(conv_integer(Adr_W)) <= DATA;
             else
               -- Cas ou W='0'
-              sortieA <= registres(conv_integer(Adr_A));
-              sortieB <= registres(conv_integer(Adr_B));
+              QA <= registres(conv_integer(Adr_A));
+              QB <= registres(conv_integer(Adr_B));
             end if;
           end if;          
         end if;
@@ -76,8 +74,4 @@ begin
     
 
   end process;
-
-  QA <= sortieA;
-  QB <= sortieB;
-
 end Behavioral;
