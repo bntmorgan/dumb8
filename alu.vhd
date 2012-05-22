@@ -1,6 +1,6 @@
 ----------------------------------------------------------------------------------
 -- Company:        INSA de Toulouse
--- Engineer:       Morgan Benoît
+-- Engineer:       Morgan BenoÃ®t
 --                 Sauvanaud Carla
 -- Create Date:    08:25:09 05/16/2012 
 -- Design Name: 
@@ -9,7 +9,7 @@
 --                 du compilateur vers le microprocesseur
 -- Target Devices: 
 -- Tool versions: 
--- Description:    Unité arithmétique et logique de notre microprocesseur
+-- Description:    UnitÃ© arithmÃ©tique et logique de notre microprocesseur
 --
 -- Dependencies: 
 --
@@ -50,9 +50,9 @@ zero <= x"00";
                   (x"00" & a) - (x"00" & b) when "010",
                   -- Multiplication super lente
                   -- a * b when "011",
-                  -- Décalage à gauche
+                  -- DÃ©calage Ã  gauche
                   -- a(7 - conv_integer(b) downto 0) & zero(conv_integer(b) downto 0) when "011",
-                  -- Décalage à droite
+                  -- DÃ©calage Ã  droite
                   -- zero(conv_integer(b) downto 0) & a(7 downto conv_integer(b)) when "100",          
                   (x"00" & a) + (x"00" & b) when others;
 	
@@ -64,7 +64,7 @@ zero <= x"00";
                    --Cas de la multiplication
                    sortie(15) or sortie(14) or sortie(13) or sortie(12) 
                    or sortie(11) or sortie(10) or sortie (9) or sortie (8) when "011",
-                   --Cas de la soustraction (voir table de vérité...)
+                   --Cas de la soustraction (voir table de vÃ©ritÃ©...)
                    (not(a(7)) and b(7) and sortie(7)) 
                    or (a(7) and not(b(7)) and not(sortie(7)))when "010",
                    '0' when others;
@@ -76,4 +76,3 @@ zero <= x"00";
 	
 	
 end Behavioral;
-

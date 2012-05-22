@@ -35,7 +35,7 @@ end memoire_instructions;
 
 architecture Behavioral of memoire_instructions is
   type memory_array is array (0 to 255) of STD_LOGIC_VECTOR (7 downto 0);
-  --Memoire des instruction supposée ROM
+  --Memoire des instruction supposÃ©e ROM
   signal memoire : memory_array := (x"06",x"06",x"06",x"06",
 										                x"00",x"20",x"06",x"01",
                                     x"00",x"01",x"03",x"12",

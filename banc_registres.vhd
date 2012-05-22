@@ -1,6 +1,6 @@
 ----------------------------------------------------------------------------------
 -- Company:        INSA de Toulouse
--- Engineer:       Morgan Benoît
+-- Engineer:       Morgan BenoÃ®t
 --                 Sauvanaud Carla
 -- Create Date:    05/17/2012 
 -- Design Name: 
@@ -46,7 +46,7 @@ architecture Behavioral of banc_registres is
 begin
   process(CLK)
   begin
-    -- RST actif à '0' et synchrone avec l'horloge
+    -- RST actif Ã  '0' et synchrone avec l'horloge
     if CLK'event and CLK='1' then
       if RST = '0' then 
         registres <= (others => x"00");
@@ -58,7 +58,7 @@ begin
           registres(conv_integer("0" & Adr_W)) <= DATA;
           QA <= DATA;
         else 
-          -- Cas de l'aléa
+          -- Cas de l'alÃ©a
           if W='1' and Adr_B = Adr_W then
             registres(conv_integer("0" & Adr_W)) <= DATA;
             QB <= DATA;
@@ -78,4 +78,3 @@ begin
 
   end process;
 end Behavioral;
-
