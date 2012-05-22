@@ -53,8 +53,8 @@ ARCHITECTURE behavior OF test_alu IS
 
    --Inputs
    signal Ctrl_Alu : std_logic_vector(2 downto 0) := (others => '0');
-   signal A : std_logic_vector(7 downto 0) := (others => '0');
-   signal B : std_logic_vector(7 downto 0) := (others => '0');
+   signal A : std_logic_vector(7 downto 0);-- := (others => '0');
+   signal B : std_logic_vector(7 downto 0);-- := (others => '0');
 
  	--Outputs
    signal S : std_logic_vector(7 downto 0);
@@ -77,7 +77,7 @@ BEGIN
           B => B
         );
         
-    A <= x"A0", x"A0" after 10ns, x"00" after 10ns;
-    B <= x"A0", x"0A" after 10ns, x"00" after 10ns;
-    Ctrl_Alu <= x"001", "001" after 10ns;
+           A <= x"A0", x"A0" after 10 ns, x"03" after 20 ns, x"FF" after 30 ns, x"FF" after 40 ns;
+           B <= x"0A", x"0A" after 10 ns, x"0A" after 20 ns, x"04" after 30 ns, x"04" after 40 ns;
+    Ctrl_Alu <= "001", "010" after 10 ns, "010" after 20 ns, "100" after 30 ns, "011" after 40 ns;
 END;

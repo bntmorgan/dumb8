@@ -41,14 +41,20 @@ end alu;
 
 architecture Behavioral of alu is
 signal sortie : std_logic_vector(15 downto 0);
+signal zero : std_logic_vector(7 downto 0);
 begin
+zero <= x"00";
+
 	with Ctrl_Alu select		
-        sortie <= x"0000" or (a + b) when "001",
-                  x"0000" or (a - b) when "010",
-                  a * b when "011",
-                  --a / b when "100",
-                  x"0000" or (a + b) when others;
-                  --faire les décalages et la division
+        sortie <= (x"00" & a) + (x"00" & b) when "001",
+                  (x"00" & a) - (x"00" & b) when "010",
+                  -- Multiplication super lente
+                  -- a * b when "011",
+                  -- Décalage à gauche
+                  -- a(7 - conv_integer(b) downto 0) & zero(conv_integer(b) downto 0) when "011",
+                  -- Décalage à droite
+                  -- zero(conv_integer(b) downto 0) & a(7 downto conv_integer(b)) when "100",          
+                  (x"00" & a) + (x"00" & b) when others;
 	
   -- Affectation de l'overflow
 	with Ctrl_Alu select
@@ -65,8 +71,9 @@ begin
 		
   C <= sortie(8);
 	N <= sortie(7);	
-	Z <= '1' when sortie = x"00" else '0';
+	Z <= '1' when sortie(7 downto 0) = x"00" else '0';
 	S <= sortie(7 downto 0);
 	
 	
 end Behavioral;
+

@@ -66,7 +66,7 @@ ARCHITECTURE behavior OF banc_registres_test IS
    signal QB : std_logic_vector(7 downto 0);
 
    -- Clock period definitions
-   constant CLK_period : time := 10 ns;
+   constant CLK_period : time := 5 ns;
  
 BEGIN
  
@@ -85,13 +85,12 @@ BEGIN
 
   CLK <= not CLK after CLK_period/2;
     
-  RST <= '1', '0' after 500ns;
-	DATA <= x"A0", x"B3" after 100ns, x"42" after 200ns, 
-            x"D2" after 300ns, x"B3" after 400ns, x"9F" after 500ns;
-	W <= '0', '1' after 120ns, '0' after 200ns, '1' after 220ns, '0' after 300ns;
-	Adr_W <= "0000", "00010" after 200ns, "00100" after 300ns, "00011" after 400ns;
-  Adr_A <= "0001", "00100" after 260ns, "00100" after 360ns, "01001" after 460ns;
-  Adr_B <= "0000", "01100" after 2600ns, "00111" after 360ns, "00011" after 460ns;
+  RST <= '1', '0' after 50 ns;
+	DATA <= x"A0", x"B3" after 10 ns, x"42" after 20 ns, x"D2" after 30 ns;
+	W <= '1', '0' after 30 ns;
+	Adr_W <= "0000", "0001" after 10 ns, "0010" after 20 ns, "0000" after 30 ns;
+  Adr_A <= "0000", "0000" after 30 ns, "0010" after 40 ns, "0000" after 50 ns;
+  Adr_B <= "0000", "0001" after 30 ns, "0011" after 40 ns, "0000" after 50 ns;
 	
 
 END;

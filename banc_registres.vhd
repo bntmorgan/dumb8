@@ -41,7 +41,7 @@ entity banc_registres is
 end banc_registres;
 
 architecture Behavioral of banc_registres is
-  type register_array is array (0 to 11) of STD_LOGIC_VECTOR (7 downto 0);
+  type register_array is array (0 to 15) of STD_LOGIC_VECTOR (7 downto 0);
   signal registres : register_array;
 begin
   process(CLK)
@@ -50,22 +50,25 @@ begin
     if CLK'event and CLK='1' then
       if RST = '0' then 
         registres <= (others => x"00");
+        QA <= x"00";
+        QB <= x"00";
       else
         -- Ecriture et lecture simultanees
         if W='1' and Adr_A = Adr_W then
-          registres(conv_integer(Adr_W)) <= DATA;
+          registres(conv_integer("0" & Adr_W)) <= DATA;
           QA <= DATA;
         else 
+          -- Cas de l'aléa
           if W='1' and Adr_B = Adr_W then
-            registres(conv_integer(Adr_W)) <= DATA;
+            registres(conv_integer("0" & Adr_W)) <= DATA;
             QB <= DATA;
           else
             if W='1' then
-              registres(conv_integer(Adr_W)) <= DATA;
+              registres(conv_integer("0" & Adr_W)) <= DATA;
             else
               -- Cas ou W='0'
-              QA <= registres(conv_integer(Adr_A));
-              QB <= registres(conv_integer(Adr_B));
+              QA <= registres(conv_integer("0" & Adr_A));
+              QB <= registres(conv_integer("0" & Adr_B));
             end if;
           end if;          
         end if;
@@ -75,3 +78,4 @@ begin
 
   end process;
 end Behavioral;
+
