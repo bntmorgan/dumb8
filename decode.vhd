@@ -29,8 +29,8 @@ use IEEE.STD_LOGIC_UNSIGNED.ALL;
 
 entity decode is
  port ( Instr  : in   STD_LOGIC_VECTOR (31 downto 0);
-        A_out  : out  STD_LOGIC_VECTOR (7 downto 0);
         Op_out : out  STD_LOGIC_VECTOR (7 downto 0);
+        A_out  : out  STD_LOGIC_VECTOR (7 downto 0);
         B_out  : out  STD_LOGIC_VECTOR (7 downto 0);
         C_out  : out  STD_LOGIC_VECTOR (7 downto 0));
 end decode;
