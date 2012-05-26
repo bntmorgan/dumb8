@@ -112,6 +112,11 @@ architecture Behavioral of chemin_de_donnees is
                                            Op : in  STD_LOGIC_VECTOR (7 downto 0);
                                            B_OUT : out  STD_LOGIC_VECTOR (7 downto 0));
   end component;
+  component mux_in_memoire_donnees port ( A : in  STD_LOGIC_VECTOR (7 downto 0);
+                                          Op : in  STD_LOGIC_VECTOR (7 downto 0);
+                                          B : in  STD_LOGIC_VECTOR (7 downto 0);
+                                          Adr : out  STD_LOGIC_VECTOR (7 downto 0));
+  end component;
 
   -- Déclaration des signaux entrée et sortie du pipeline : plus propre
   type pipeline_in_out is record
@@ -191,8 +196,7 @@ architecture Behavioral of chemin_de_donnees is
 begin
   -- Pipelines
 
-  pLI_DI : pipeline port map ( 
-                               li_di_con.op_in, 
+  pLI_DI : pipeline port map ( li_di_con.op_in, 
                                li_di_con.a_in, 
                                li_di_con.b_in, 
                                li_di_con.c_in, 
@@ -269,6 +273,11 @@ begin
                                             ex_mem_con.op_out,
                                             mem_re_con.b_in);
 
+  mimd : mux_in_memoire_donnees port map ( ex_mem_con.a_out, 
+                                           ex_mem_con.op_out,
+                                           ex_mem_con.b_out,
+                                           md_con.adr);
+
   -- Interconnexion des composants
   li_di_con.op_in <= Op;
   li_di_con.a_in <= A;
@@ -288,9 +297,9 @@ begin
   mem_re_con.op_in <= ex_mem_con.op_out;
   mem_re_con.a_in <= ex_mem_con.a_out;
   
-  md_con.adr <= ex_mem_con.b_out;
   md_con.rst <= RST;
   md_con.clk <= CLK;
+  md_con.din <= ex_mem_con.b_out;
 
   Op_out <= mem_re_con.op_out;
   A_out <= mem_re_con.a_out;
