@@ -98,32 +98,25 @@ architecture Behavioral of chemin_de_donnees is
                                              mux_out: out STD_LOGIC_VECTOR (7 downto 0));
   end component;
 
+  -- Déclaration des signaux entrée et sortie du pipeline : plus propre
+  type pipeline_in_out is record
+    a_in : STD_LOGIC_VECTOR (7 downto 0);
+    a_out : STD_LOGIC_VECTOR (7 downto 0);
+    op_in : STD_LOGIC_VECTOR (7 downto 0);
+    op_out : STD_LOGIC_VECTOR (7 downto 0);
+    b_in : STD_LOGIC_VECTOR (7 downto 0);
+    b_out : STD_LOGIC_VECTOR (7 downto 0);
+    c_in : STD_LOGIC_VECTOR (7 downto 0);
+    c_out : STD_LOGIC_VECTOR (7 downto 0);
+  end record;
+  
   -- Sorties et entrées des pipelines
-  signal Op : STD_LOGIC_VECTOR (7 downto 0);
-  signal A : STD_LOGIC_VECTOR (7 downto 0);
-  signal B : STD_LOGIC_VECTOR (7 downto 0);
-  signal C : STD_LOGIC_VECTOR (7 downto 0);
   
-  signal Op_LI_DI_DI_EX : STD_LOGIC_VECTOR (7 downto 0);
-  signal A_LI_DI_DI_EX : STD_LOGIC_VECTOR (7 downto 0);
-  signal B_LI_DI_DI_EX : STD_LOGIC_VECTOR (7 downto 0);
-  signal C_LI_DI_DI_EX : STD_LOGIC_VECTOR (7 downto 0);
-  
-  signal Op_DI_EX_EX_Mem : STD_LOGIC_VECTOR (7 downto 0);
-  signal A_DI_EX_EX_Mem : STD_LOGIC_VECTOR (7 downto 0);
-  signal B_DI_EX_EX_Mem : STD_LOGIC_VECTOR (7 downto 0);
-  signal C_DI_EX_EX_Mem : STD_LOGIC_VECTOR (7 downto 0);
-  
-  signal Op_EX_Mem_Mem_RE : STD_LOGIC_VECTOR (7 downto 0);
-  signal A_EX_Mem_Mem_RE : STD_LOGIC_VECTOR (7 downto 0);
-  signal B_EX_Mem_Mem_RE : STD_LOGIC_VECTOR (7 downto 0);
-  signal C_EX_Mem_Mem_RE : STD_LOGIC_VECTOR (7 downto 0);
-  
-  signal Op_out : STD_LOGIC_VECTOR (7 downto 0);
-  signal A_out : STD_LOGIC_VECTOR (7 downto 0);
-  signal B_out : STD_LOGIC_VECTOR (7 downto 0);
-  signal C_out : STD_LOGIC_VECTOR (7 downto 0);
-  
+  signal li_di_con : pipeline_in_out;
+  signal di_ex_con : pipeline_in_out;
+  signal ex_mem_con : pipeline_in_out;
+  signal mem_re_con : pipeline_in_out;
+
   -- Sortie de la LC après le dernier pipeline
   signal W : STD_LOGIC;
   
@@ -144,22 +137,95 @@ architecture Behavioral of chemin_de_donnees is
   -- Instruction sortant de la mémoire d'instructions
   signal instruction : STD_LOGIC_VECTOR (31 downto 0);
   
-  signal tuning : STD_LOGIC_VECTOR(7 downto 0):= x"00";
+  signal Op : STD_LOGIC_VECTOR (7 downto 0);
+  signal A : STD_LOGIC_VECTOR (7 downto 0);
+  signal B : STD_LOGIC_VECTOR (7 downto 0);
+  signal C : STD_LOGIC_VECTOR (7 downto 0);
+  
+  signal Op_out : STD_LOGIC_VECTOR (7 downto 0);
+  signal A_out : STD_LOGIC_VECTOR (7 downto 0);
+  signal B_out : STD_LOGIC_VECTOR (7 downto 0);
+  signal C_out : STD_LOGIC_VECTOR (7 downto 0);
   
 begin
+  -- Pipelines
+
+  pLI_DI : pipeline port map ( li_di_con.a_in, 
+                               li_di_con.op_in, 
+                               li_di_con.b_in, 
+                               li_di_con.c_in, 
+                               li_di_con.a_out, 
+                               li_di_con.op_out, 
+                               li_di_con.b_out, 
+                               li_di_con.c_out,
+                               CLK,
+                               RST);
+
+  sipDI_EX : pipeline port map ( di_ex_con.a_in, 
+                               di_ex_con.op_in, 
+                               di_ex_con.b_in, 
+                               di_ex_con.c_in, 
+                               di_ex_con.a_out, 
+                               di_ex_con.op_out, 
+                               di_ex_con.b_out, 
+                               di_ex_con.c_out,
+                               CLK,
+                               RST);
+
+  pEX_Mem : pipeline port map ( ex_mem_con.a_in, 
+                                ex_mem_con.op_in, 
+                                ex_mem_con.b_in, 
+                                ex_mem_con.c_in, 
+                                ex_mem_con.a_out, 
+                                ex_mem_con.op_out, 
+                                ex_mem_con.b_out, 
+                                ex_mem_con.c_out,
+                                CLK,
+                                RST);
+
+  pMem_Re : pipeline port map ( mem_re_con.a_in, 
+                                mem_re_con.op_in, 
+                                mem_re_con.b_in, 
+                                mem_re_con.c_in, 
+                                mem_re_con.a_out, 
+                                mem_re_con.op_out, 
+                                mem_re_con.b_out, 
+                                mem_re_con.c_out,
+                                CLK,
+                                RST);
+
+  rw_r : rw_regitres port map (Op_out, W);
+  
+  -- Interconnexion des composants
+  li_di_con.a_in <= A;
+  li_di_con.op_in <= Op;
+  li_di_con.b_in <= B;
+  li_di_con.c_in <= C;
+  
+  di_ex_con.a_in <= li_di_con.a_out;
+  di_ex_con.op_in <= li_di_con.op_out;
+  di_ex_con.b_in <= msbr_out;
+  di_ex_con.c_in <= QB;
+ 
+  ex_mem_con.a_in <= di_ex_con.a_out;
+  ex_mem_con.op_in <= di_ex_con.op_out;
+  ex_mem_con.b_in <= di_ex_con.b_out;
+
+  mem_re_con.a_in <= ex_mem_con.a_out;
+  mem_re_con.op_in <= ex_mem_con.op_out;
+  mem_re_con.op_in <= ex_mem_con.op_out;
+
+  A_out <= mem_re_con.a_out;
+  Op_out <= mem_re_con.op_out;
+  B_out <= mem_re_con.b_out;
+  C_out <= mem_re_con.c_out;
+
   -- Compteur incrémentant de 4 le Pointer Instruction
   ip : compteur port map (CLK, SENS, LOAD, RST, EN, din_cpt, instruction_pointer);
   mi : memoire_instructions port map (instruction_pointer, CLK, instruction);
   -- Decodeur d'instructions
-  di : decode port map (instruction, Op, A, B, C);
-  br : banc_registres port map (B_LI_DI_DI_EX(3 downto 0), C_LI_DI_DI_EX(3 downto 0), A_out(3 downto 0), W, B_out, RST, CLK, QA, QB);
-  msbr : mux_sortie_banc_registres port map( Op_LI_DI_DI_EX, B_LI_DI_DI_EX, QA, msbr_out);
-  
-  pLI_DI : pipeline port map (Op, A, B, C, Op_LI_DI_DI_EX, A_LI_DI_DI_EX, B_LI_DI_DI_EX, C_LI_DI_DI_EX, CLK, RST);
-  pDI_EX : pipeline port map (Op_LI_DI_DI_EX, A_LI_DI_DI_EX, msbr_out, C_LI_DI_DI_EX, Op_DI_EX_EX_Mem, A_DI_EX_EX_Mem, B_DI_EX_EX_Mem, C_DI_EX_EX_Mem, CLK, RST);
-  pEX_Mem : pipeline port map (Op_DI_EX_EX_Mem, A_DI_EX_EX_Mem, B_DI_EX_EX_Mem, C_DI_EX_EX_Mem, Op_EX_Mem_Mem_RE, A_EX_Mem_Mem_RE, B_EX_Mem_Mem_RE, C_EX_Mem_Mem_RE, CLK, RST);
-  pMem_RE : pipeline port map (Op_EX_Mem_Mem_RE, A_EX_Mem_Mem_RE, B_EX_Mem_Mem_RE, C_EX_Mem_Mem_RE, Op_out, A_out, B_out, C_out, CLK, RST);
-  
-  rw_r : rw_regitres port map (Op_out, W);
-  
+  di : decode port map (instruction, A, Op, B, C);
+  br : banc_registres port map (li_di_con.b_out(3 downto 0), li_di_con.c_out(3 downto 0), A_out(3 downto 0), W, B_out, RST, CLK, QA, QB);
+  msbr : mux_sortie_banc_registres port map( li_di_con.op_out, li_di_con.b_out, QA, msbr_out);
+
 end Behavioral;
