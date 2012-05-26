@@ -4,7 +4,7 @@
 --
 -- Create Date:   19:23:03 05/21/2012
 -- Design Name:   
--- Module Name:   U:/Documents/4A/Projet_systeme/memoire_donnees/tes_memoire_donnees.vhd
+-- Module Name:   U:/Documents/4A/Projet_systeme/memoire_donnees/test_memoire_donnees.vhd
 -- Project Name:  memoire_donnees
 -- Target Device:  
 -- Tool versions:  
@@ -30,10 +30,10 @@ USE ieee.std_logic_1164.ALL;
 USE ieee.std_logic_unsigned.all;
 USE ieee.numeric_std.ALL;
  
-ENTITY tes_memoire_donnees IS
-END tes_memoire_donnees;
+ENTITY test_memoire_donnees IS
+END test_memoire_donnees;
  
-ARCHITECTURE behavior OF tes_memoire_donnees IS 
+ARCHITECTURE behavior OF test_memoire_donnees IS 
  
     -- Component Declaration for the Unit Under Test (UUT)
  

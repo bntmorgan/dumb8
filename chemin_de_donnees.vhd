@@ -82,7 +82,6 @@ architecture Behavioral of chemin_de_donnees is
                           B_out  : out  STD_LOGIC_VECTOR (7 downto 0);
                           C_out  : out  STD_LOGIC_VECTOR (7 downto 0));
   end component;
-  
   component rw_regitres port( op : IN  std_logic_vector(7 downto 0);
                               w  : OUT  std_logic);
   end component;
@@ -92,10 +91,18 @@ architecture Behavioral of chemin_de_donnees is
                             Din : in  STD_LOGIC_VECTOR (7 downto 0);
 			                      Dout : out STD_LOGIC_VECTOR (7 downto 0));
   end component;
-  component mux_sortie_banc_registres port ( Op     : in  STD_LOGIC_VECTOR (7 downto 0);
-                                             B_in   : in  STD_LOGIC_VECTOR (7 downto 0);
-                                             QA     : in  STD_LOGIC_VECTOR (7 downto 0);
-                                             mux_out: out STD_LOGIC_VECTOR (7 downto 0));
+  component mux_out_br port ( Op     : in  STD_LOGIC_VECTOR (7 downto 0);
+                              B_in   : in  STD_LOGIC_VECTOR (7 downto 0);
+                              QA     : in  STD_LOGIC_VECTOR (7 downto 0);
+                              mux_out: out STD_LOGIC_VECTOR (7 downto 0));
+  end component;
+  component op_to_ctrl_alu port ( Op       : in  STD_LOGIC_VECTOR (7 downto 0);
+                                  Ctrl_Alu : out STD_LOGIC_VECTOR (2 downto 0));
+  end component;
+  component mux_out_alu port ( Op     : in  STD_LOGIC_VECTOR (7 downto 0);
+                               B_in   : in  STD_LOGIC_VECTOR (7 downto 0);
+                               S      : in  STD_LOGIC_VECTOR (7 downto 0);
+                               mux_out: out STD_LOGIC_VECTOR (7 downto 0));
   end component;
 
   -- Déclaration des signaux entrée et sortie du pipeline : plus propre
@@ -110,12 +117,26 @@ architecture Behavioral of chemin_de_donnees is
     c_out : STD_LOGIC_VECTOR (7 downto 0);
   end record;
   
-  -- Sorties et entrées des pipelines
+  type alu_in_out is record
+    s : STD_LOGIC_VECTOR (7 downto 0);
+    n : STD_LOGIC;
+    o : STD_LOGIC;
+    z : STD_LOGIC;
+    c : STD_LOGIC;
+    ctrl_alu : STD_LOGIC_VECTOR (2 downto 0);
+    a : STD_LOGIC_VECTOR (7 downto 0);
+    b : STD_LOGIC_VECTOR (7 downto 0);
+  end record;
+
+  -- Entrées et sorties des pipelines
   
   signal li_di_con : pipeline_in_out;
   signal di_ex_con : pipeline_in_out;
   signal ex_mem_con : pipeline_in_out;
   signal mem_re_con : pipeline_in_out;
+
+  -- Entrées et sorties de l'alu
+  signal alu_con : alu_in_out;
 
   -- Sortie de la LC après le dernier pipeline
   signal W : STD_LOGIC;
@@ -196,6 +217,22 @@ begin
                                 RST);
 
   rw_r : rw_regitres port map (Op_out, W);
+
+  otca : op_to_ctrl_alu port map (di_ex_con.op_out, alu_con.ctrl_alu);
+ 
+  al : alu port map ( alu_con.s, 
+                      alu_con.n, 
+                      alu_con.o, 
+                      alu_con.z, 
+                      alu_con.c, 
+                      alu_con.ctrl_alu, 
+                      alu_con.a, 
+                      alu_con.b);
+ 
+  moa : mux_out_alu port map ( di_ex_con.op_out,
+                               di_ex_con.b_out,
+                               alu_con.s,
+                               ex_mem_con.b_in);
   
   -- Interconnexion des composants
   li_di_con.op_in <= Op;
@@ -207,10 +244,11 @@ begin
   di_ex_con.a_in <= li_di_con.a_out;
   di_ex_con.b_in <= msbr_out;
   di_ex_con.c_in <= QB;
+  alu_con.a <= di_ex_con.b_out;
+  alu_con.b <= di_ex_con.c_out;
  
   ex_mem_con.op_in <= di_ex_con.op_out;
   ex_mem_con.a_in <= di_ex_con.a_out;
-  ex_mem_con.b_in <= di_ex_con.b_out;
 
   mem_re_con.op_in <= ex_mem_con.op_out;
   mem_re_con.a_in <= ex_mem_con.a_out;
@@ -227,6 +265,6 @@ begin
   -- Decodeur d'instructions
   di : decode port map (instruction, Op, A, B, C);
   br : banc_registres port map (li_di_con.b_out(3 downto 0), li_di_con.c_out(3 downto 0), A_out(3 downto 0), W, B_out, RST, CLK, QA, QB);
-  msbr : mux_sortie_banc_registres port map( li_di_con.op_out, li_di_con.b_out, QA, msbr_out);
+  msbr : mux_out_br port map( li_di_con.op_out, li_di_con.b_out, QA, msbr_out);
 
 end Behavioral;

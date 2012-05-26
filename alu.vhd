@@ -40,21 +40,24 @@ entity alu is
 end alu;
 
 architecture Behavioral of alu is
-signal sortie : std_logic_vector(15 downto 0);
-signal zero : std_logic_vector(7 downto 0);
+  signal sortie : std_logic_vector(15 downto 0);
+  signal zero   : std_logic_vector(7 downto 0);
 begin
-zero <= x"00";
+  -- Signal temporaire util lors des décalages
+  zero <= x"00";
 
-	with Ctrl_Alu select		
-        sortie <= (x"00" & a) + (x"00" & b) when "001",
-                  (x"00" & a) - (x"00" & b) when "010",
-                  -- Multiplication super lente
-                  -- a * b when "011",
-                  -- Décalage à gauche
-                  -- a(7 - conv_integer(b) downto 0) & zero(conv_integer(b) downto 0) when "011",
-                  -- Décalage à droite
-                  -- zero(conv_integer(b) downto 0) & a(7 downto conv_integer(b)) when "100",          
-                  (x"00" & a) + (x"00" & b) when others;
+  sortie <= (x"00" & a) + (x"00" & b) when Ctrl_Alu = "001" else
+            (x"00" & a) - (x"00" & b) when Ctrl_Alu = "010" else
+             -- Multiplication super lente
+             -- a * b when "011",
+             -- Décalage à gauche
+             x"00" & a when Ctrl_Alu = "011" and B = x"00" else
+             x"00" & a(7 - conv_integer(b) downto 0) & zero(conv_integer(b)-1 downto 0) when Ctrl_Alu = "011" and conv_integer(b) < 8 else
+             -- Décalage à droite
+             x"00" & a when Ctrl_Alu = "100" and B = x"00" else
+             x"00" & zero(conv_integer(b)-1 downto 0) & a(7 downto conv_integer(b)) when Ctrl_Alu = "100" and conv_integer(b) < 8 else
+             -- x"00" dans le cas général
+             (x"00" & x"00");
 	
   -- Affectation de l'overflow
 	with Ctrl_Alu select
