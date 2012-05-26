@@ -29,16 +29,16 @@ use IEEE.STD_LOGIC_UNSIGNED.ALL;
 
 entity memoire_donnees is
 Port ( Adr : in  STD_LOGIC_VECTOR (7 downto 0);
-       DIN  : in  STD_LOGIC_VECTOR (7 downto 0);
+       DIN : in  STD_LOGIC_VECTOR (7 downto 0);
        RW  : in  STD_LOGIC;
        RST : in  STD_LOGIC;
        CLK : in STD_LOGIC;
-       DOUT : out STD_LOGIC_VECTOR (7 downto 0));
+       DOUT: out STD_LOGIC_VECTOR (7 downto 0));
 end memoire_donnees;
 
 architecture Behavioral of memoire_donnees is
   type memory_array is array (0 to 255) of STD_LOGIC_VECTOR (7 downto 0);
-  signal memoire : memory_array;
+  signal memoire : memory_array := (others => x"00");
 begin
   process(CLK)
   begin

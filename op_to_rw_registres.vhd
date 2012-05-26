@@ -4,7 +4,7 @@
 -- 
 -- Create Date:    09:01:08 05/24/2012 
 -- Design Name: 
--- Module Name:    rw_regitres - Behavioral 
+-- Module Name:    op_to_rw_registres - Behavioral 
 -- Project Name: 
 -- Target Devices: 
 -- Tool versions: 
@@ -27,22 +27,23 @@ use IEEE.STD_LOGIC_UNSIGNED.ALL;
 --library UNISIM;
 --use UNISIM.VComponents.all;
 
-entity rw_regitres is
+entity op_to_rw_registres is
   port (
     op : in STD_LOGIC_VECTOR(7 downto 0);
     w : out STD_LOGIC
   );
-end rw_regitres;
+end op_to_rw_registres;
 
-architecture Behavioral of rw_regitres is
+architecture Behavioral of op_to_rw_registres is
 
 begin
   with op select
        -- Ecriture dans les cas suivants
        -- AFC
-  w <= '1' when x"06" ,
+  w <= '1' when x"05",
        -- COP
-       '1' when x"05" ,
+       '1' when x"06",
+       '1' when x"07",
        '0' when others;
 
 end Behavioral;

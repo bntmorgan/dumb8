@@ -82,7 +82,7 @@ architecture Behavioral of chemin_de_donnees is
                           B_out  : out  STD_LOGIC_VECTOR (7 downto 0);
                           C_out  : out  STD_LOGIC_VECTOR (7 downto 0));
   end component;
-  component rw_regitres port( op : IN  std_logic_vector(7 downto 0);
+  component op_to_rw_registres port( op : IN  std_logic_vector(7 downto 0);
                               w  : OUT  std_logic);
   end component;
   component compteur port ( CLK, SENS, LOAD : in  STD_LOGIC;
@@ -103,6 +103,14 @@ architecture Behavioral of chemin_de_donnees is
                                B_in   : in  STD_LOGIC_VECTOR (7 downto 0);
                                S      : in  STD_LOGIC_VECTOR (7 downto 0);
                                mux_out: out STD_LOGIC_VECTOR (7 downto 0));
+  end component;
+  component op_to_rw_memoire_donnees port ( Op : in  STD_LOGIC_VECTOR (7 downto 0);
+                                            RW : out  STD_LOGIC);
+  end component;
+  component mux_out_memoire_donnees port ( DOUT : in  STD_LOGIC_VECTOR (7 downto 0);
+                                           B_IN : in  STD_LOGIC_VECTOR (7 downto 0);
+                                           Op : in  STD_LOGIC_VECTOR (7 downto 0);
+                                           B_OUT : out  STD_LOGIC_VECTOR (7 downto 0));
   end component;
 
   -- Déclaration des signaux entrée et sortie du pipeline : plus propre
@@ -128,6 +136,15 @@ architecture Behavioral of chemin_de_donnees is
     b : STD_LOGIC_VECTOR (7 downto 0);
   end record;
 
+  type memoire_donnees_in_out is record 
+    adr : STD_LOGIC_VECTOR(7 downto 0);
+    din : STD_LOGIC_VECTOR(7 downto 0);
+    rw : STD_LOGIC;
+    rst : STD_LOGIC;
+    clk : STD_LOGIC;
+    dout : STD_LOGIC_VECTOR(7 downto 0);
+  end record;
+    
   -- Entrées et sorties des pipelines
   
   signal li_di_con : pipeline_in_out;
@@ -137,6 +154,9 @@ architecture Behavioral of chemin_de_donnees is
 
   -- Entrées et sorties de l'alu
   signal alu_con : alu_in_out;
+
+  -- Entrées et sorties de la mémoire de données
+  signal md_con : memoire_donnees_in_out;
 
   -- Sortie de la LC après le dernier pipeline
   signal W : STD_LOGIC;
@@ -216,7 +236,7 @@ begin
                                 CLK,
                                 RST);
 
-  rw_r : rw_regitres port map (Op_out, W);
+  rw_r : op_to_rw_registres port map (Op_out, W);
 
   otca : op_to_ctrl_alu port map (di_ex_con.op_out, alu_con.ctrl_alu);
  
@@ -234,6 +254,21 @@ begin
                                alu_con.s,
                                ex_mem_con.b_in);
   
+  md : memoire_donnees port map ( md_con.adr,
+                                  md_con.din,
+                                  md_con.rw,
+                                  md_con.rst,
+                                  md_con.clk,
+                                  md_con.dout);
+
+  otrmd : op_to_rw_memoire_donnees port map ( ex_mem_con.op_out,
+                                              md_con.rw);
+
+  momd : mux_out_memoire_donnees port map ( md_con.dout,
+                                            ex_mem_con.b_out,
+                                            ex_mem_con.op_out,
+                                            mem_re_con.b_in);
+
   -- Interconnexion des composants
   li_di_con.op_in <= Op;
   li_di_con.a_in <= A;
@@ -252,7 +287,10 @@ begin
 
   mem_re_con.op_in <= ex_mem_con.op_out;
   mem_re_con.a_in <= ex_mem_con.a_out;
-  mem_re_con.b_in <= ex_mem_con.b_out;
+  
+  md_con.adr <= ex_mem_con.b_out;
+  md_con.rst <= RST;
+  md_con.clk <= CLK;
 
   Op_out <= mem_re_con.op_out;
   A_out <= mem_re_con.a_out;

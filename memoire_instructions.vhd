@@ -70,9 +70,12 @@ architecture Behavioral of memoire_instructions is
                                     x"02",x"0C",x"07",x"08",
                                     
                                     -- Copie de R1 dans R9
-										                x"05",x"09",x"00",x"00",
+										      x"05",x"09",x"00",x"00",
                                     -- Copie de R8 dans R9
                                     x"05",x"02",x"00",x"00",
+															 
+                                    -- Chargement de R1 avec [R1]
+                                    x"07",x"01",x"01",x"00",
 										                others =>x"00");
 begin
   process(CLK)

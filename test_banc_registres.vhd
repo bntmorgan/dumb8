@@ -4,7 +4,7 @@
 --
 -- Create Date:   18:38:23 05/17/2012
 -- Design Name:   
--- Module Name:   U:/Documents/4A/projet_systeme/banc_registres/banc_registres_test.vhd
+-- Module Name:   U:/Documents/4A/projet_systeme/banc_registres/test_banc_registres.vhd
 -- Project Name:  banc_registres
 -- Target Device:  
 -- Tool versions:  
@@ -30,10 +30,10 @@ USE ieee.std_logic_1164.ALL;
 USE ieee.std_logic_unsigned.all;
 USE ieee.numeric_std.ALL;
  
-ENTITY banc_registres_test IS
-END banc_registres_test;
+ENTITY test_banc_registres IS
+END test_banc_registres;
  
-ARCHITECTURE behavior OF banc_registres_test IS 
+ARCHITECTURE behavior OF test_banc_registres IS 
  
     -- Component Declaration for the Unit Under Test (UUT)
  
