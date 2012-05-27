@@ -59,14 +59,14 @@ ARCHITECTURE behavior OF test_banc_registres IS
    signal W : std_logic := '0';
    signal DATA : std_logic_vector(7 downto 0) := (others => '0');
    signal RST : std_logic := '0';
-   signal CLK : std_logic := '0';
+   signal CLK : std_logic := '1';
 
  	--Outputs
    signal QA : std_logic_vector(7 downto 0);
    signal QB : std_logic_vector(7 downto 0);
 
    -- Clock period definitions
-   constant CLK_period : time := 5 ns;
+   constant CLK_period : time := 10 ns;
  
 BEGIN
  

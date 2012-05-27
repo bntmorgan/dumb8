@@ -371,6 +371,6 @@ begin
   -- Decodeur d'instructions
   di : decode port map (instruction, Op, A, B, C);
   br : banc_registres port map (li_di_con.b_out(3 downto 0), li_di_con.c_out(3 downto 0), A_out(3 downto 0), W, B_out, RST, CLK, QA, QB);
-  msbr : mux_out_br port map(ah_con.li_di_op_out, li_di_con.b_out, QA, msbr_out);
+  msbr : mux_out_br port map(li_di_con.op_out, li_di_con.b_out, QA, msbr_out);
 
 end Behavioral;

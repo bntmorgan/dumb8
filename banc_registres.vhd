@@ -49,7 +49,7 @@ begin
   process(CLK)
   begin
     -- RST actif à '0' et synchrone avec l'horloge
-    if CLK'event and CLK='0' then
+    if CLK'event and CLK='1' then
       if RST = '0' then 
         registres <= (others => x"00");
         QA <= x"00";
@@ -71,10 +71,6 @@ begin
             -- Cas général d'écriture dans un registre
             if W='1' then
               registres(conv_integer("0" & Adr_W)) <= DATA;
-            else
-              -- TODO : que faire dans ce cas là ?
-              QA <= x"00";
-              QB <= x"00";
             end if;
           end if;          
         end if;
