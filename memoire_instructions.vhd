@@ -42,6 +42,22 @@ architecture Behavioral of memoire_instructions is
                                     x"06",x"00",x"02",x"00",
                                     -- Copie de R0 dans R1
                                     x"05",x"01",x"00",x"00",
+                                    
+                                    -- Affectation de R0 avec x"02"
+                                    x"06",x"00",x"02",x"00",
+                                    -- NOP
+                                    x"00",x"00",x"00",x"00",
+                                    -- Copie de R0 dans R1
+                                    x"05",x"01",x"00",x"00",
+                                    
+                                    -- Affectation de R0 avec x"02"
+                                    x"06",x"00",x"02",x"00",
+                                    -- NOP
+                                    x"00",x"00",x"00",x"00",
+                                    -- NOP
+                                    x"00",x"00",x"00",x"00",
+                                    -- Copie de R0 dans R1
+                                    x"05",x"01",x"00",x"00",
 
                                     -- Affectation de R0 avec x"02"
                                     x"06",x"00",x"02",x"00",

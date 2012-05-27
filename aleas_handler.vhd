@@ -30,8 +30,12 @@ use IEEE.STD_LOGIC_1164.ALL;
 --use UNISIM.VComponents.all;
 
 entity aleas_handler is
-    Port ( op_in : in  STD_LOGIC_VECTOR (7 downto 0);
-           a_in : in  STD_LOGIC_VECTOR (7 downto 0);
+    Port ( di_ex_op : in  STD_LOGIC_VECTOR (7 downto 0);
+           di_ex_a : in  STD_LOGIC_VECTOR (7 downto 0);
+           ex_mem_op : in  STD_LOGIC_VECTOR (7 downto 0);
+           ex_mem_a : in  STD_LOGIC_VECTOR (7 downto 0);
+           mem_re_op : in  STD_LOGIC_VECTOR (7 downto 0);
+           mem_re_a : in  STD_LOGIC_VECTOR (7 downto 0);
            li_di_op : in  STD_LOGIC_VECTOR (7 downto 0);
            li_di_b : in  STD_LOGIC_VECTOR (7 downto 0);
            li_di_c : in  STD_LOGIC_VECTOR (7 downto 0);
@@ -44,15 +48,27 @@ architecture Behavioral of aleas_handler is
 
 begin
 
-clk_out <= '0' when 
-  ((((a_in = li_di_b) or (a_in = li_di_c)) and (li_di_op = x"01" or li_di_op = x"02" or li_di_op = x"03" or li_di_op = x"04")) or 
-     (a_in = li_di_b and (li_di_op = x"05" or li_di_op = x"08"))) and 
-     (op_in = x"01" or op_in = x"02" or op_in = x"03" or op_in = x"04" or op_in = x"05" or op_in = x"06" or op_in = x"07") else clk;
+clk_out <= '0' when (((((ex_mem_a = li_di_b) or (ex_mem_a = li_di_c)) and (li_di_op = x"01" or li_di_op = x"02" or li_di_op = x"03" or li_di_op = x"04")) or 
+                     (ex_mem_a = li_di_b and (li_di_op = x"05" or li_di_op = x"08"))) and 
+                     (ex_mem_op = x"01" or ex_mem_op = x"02" or ex_mem_op = x"03" or ex_mem_op = x"04" or ex_mem_op = x"05" or ex_mem_op = x"06" or ex_mem_op = x"07")) or 
+                    (((((mem_re_a = li_di_b) or (mem_re_a = li_di_c)) and (li_di_op = x"01" or li_di_op = x"02" or li_di_op = x"03" or li_di_op = x"04")) or 
+                     (mem_re_a = li_di_b and (li_di_op = x"05" or li_di_op = x"08"))) and 
+                     (mem_re_op = x"01" or mem_re_op = x"02" or mem_re_op = x"03" or mem_re_op = x"04" or mem_re_op = x"05" or mem_re_op = x"06" or mem_re_op = x"07")) or
+                    (((((di_ex_a = li_di_b) or (di_ex_a = li_di_c)) and (li_di_op = x"01" or li_di_op = x"02" or li_di_op = x"03" or li_di_op = x"04")) or 
+                     (di_ex_a = li_di_b and (li_di_op = x"05" or li_di_op = x"08"))) and 
+                     (di_ex_op = x"01" or di_ex_op = x"02" or di_ex_op = x"03" or di_ex_op = x"04" or di_ex_op = x"05" or di_ex_op = x"06" or di_ex_op = x"07"))
+               else clk;
 
-li_di_op_out <= x"00" when 
-  ((((a_in = li_di_b) or (a_in = li_di_c)) and (li_di_op = x"01" or li_di_op = x"02" or li_di_op = x"03" or li_di_op = x"04")) or 
-     (a_in = li_di_b and (li_di_op = x"05" or li_di_op = x"08"))) and 
-     (op_in = x"01" or op_in = x"02" or op_in = x"03" or op_in = x"04" or op_in = x"05" or op_in = x"06" or op_in = x"07") else li_di_op;
+li_di_op_out <= x"00" when (((((ex_mem_a = li_di_b) or (ex_mem_a = li_di_c)) and (li_di_op = x"01" or li_di_op = x"02" or li_di_op = x"03" or li_di_op = x"04")) or 
+                     (ex_mem_a = li_di_b and (li_di_op = x"05" or li_di_op = x"08"))) and 
+                     (ex_mem_op = x"01" or ex_mem_op = x"02" or ex_mem_op = x"03" or ex_mem_op = x"04" or ex_mem_op = x"05" or ex_mem_op = x"06" or ex_mem_op = x"07")) or 
+                    (((((mem_re_a = li_di_b) or (mem_re_a = li_di_c)) and (li_di_op = x"01" or li_di_op = x"02" or li_di_op = x"03" or li_di_op = x"04")) or 
+                     (mem_re_a = li_di_b and (li_di_op = x"05" or li_di_op = x"08"))) and 
+                     (mem_re_op = x"01" or mem_re_op = x"02" or mem_re_op = x"03" or mem_re_op = x"04" or mem_re_op = x"05" or mem_re_op = x"06" or mem_re_op = x"07")) or
+                    (((((di_ex_a = li_di_b) or (di_ex_a = li_di_c)) and (li_di_op = x"01" or li_di_op = x"02" or li_di_op = x"03" or li_di_op = x"04")) or 
+                     (di_ex_a = li_di_b and (li_di_op = x"05" or li_di_op = x"08"))) and 
+                     (di_ex_op = x"01" or di_ex_op = x"02" or di_ex_op = x"03" or di_ex_op = x"04" or di_ex_op = x"05" or di_ex_op = x"06" or di_ex_op = x"07"))
+               else li_di_op;
 
 end Behavioral;
 

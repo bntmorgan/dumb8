@@ -117,17 +117,12 @@ architecture Behavioral of chemin_de_donnees is
                                           B   : in  STD_LOGIC_VECTOR (7 downto 0);
                                           Adr : out  STD_LOGIC_VECTOR (7 downto 0));
   end component;
-  component first_no_nop_op_and_a port ( di_ex_op   : in  std_logic_vector (7 downto 0);
-                                         di_ex_a  : in  std_logic_vector (7 downto 0);
-                                         ex_mem_op  : in  std_logic_vector (7 downto 0);
-                                         ex_mem_a : in  std_logic_vector (7 downto 0);
-                                         mem_re_op  : in  std_logic_vector (7 downto 0);
-                                         mem_re_a : in  std_logic_vector (7 downto 0);
-                                         op_out     : out  std_logic_vector (7 downto 0);
-                                         a_out    : out  std_logic_vector (7 downto 0));
-  end component;
-  component aleas_handler port ( op_in : in  STD_LOGIC_VECTOR (7 downto 0);
-                                 a_in : in  STD_LOGIC_VECTOR (7 downto 0);
+  component aleas_handler port ( di_ex_op : in  STD_LOGIC_VECTOR (7 downto 0);
+                                 di_ex_a : in  STD_LOGIC_VECTOR (7 downto 0);
+                                 ex_mem_op : in  STD_LOGIC_VECTOR (7 downto 0);
+                                 ex_mem_a : in  STD_LOGIC_VECTOR (7 downto 0);
+                                 mem_re_op : in  STD_LOGIC_VECTOR (7 downto 0);
+                                 mem_re_a : in  STD_LOGIC_VECTOR (7 downto 0);
                                  li_di_op : in  STD_LOGIC_VECTOR (7 downto 0);
                                  li_di_b : in  STD_LOGIC_VECTOR (7 downto 0);
                                  li_di_c : in  STD_LOGIC_VECTOR (7 downto 0);
@@ -169,8 +164,12 @@ architecture Behavioral of chemin_de_donnees is
   end record;
 
   type aleas_handler_in_out is record
-    op_in : STD_LOGIC_VECTOR (7 downto 0);
-    a_in : STD_LOGIC_VECTOR (7 downto 0);
+    di_ex_op : STD_LOGIC_VECTOR (7 downto 0);
+    di_ex_a : STD_LOGIC_VECTOR (7 downto 0);
+    ex_mem_op : STD_LOGIC_VECTOR (7 downto 0);
+    ex_mem_a : STD_LOGIC_VECTOR (7 downto 0);
+    mem_re_op : STD_LOGIC_VECTOR (7 downto 0);
+    mem_re_a : STD_LOGIC_VECTOR (7 downto 0);
     li_di_op : STD_LOGIC_VECTOR (7 downto 0);
     li_di_b : STD_LOGIC_VECTOR (7 downto 0);
     li_di_c : STD_LOGIC_VECTOR (7 downto 0);
@@ -310,17 +309,12 @@ begin
                                            ex_mem_con.b_out,
                                            md_con.adr);
 
-  fnnoaa : first_no_nop_op_and_a port map ( di_ex_con.op_out,
-                                            di_ex_con.a_out,
-                                            ex_mem_con.op_out,
-                                            ex_mem_con.a_out,
-                                            mem_re_con.op_out,
-                                            mem_re_con.a_out,
-                                            ah_con.op_in,
-                                            ah_con.a_in);
-
-  ah : aleas_handler port map ( ah_con.op_in,
-                                ah_con.a_in,
+  ah : aleas_handler port map ( ah_con.di_ex_op,
+                                ah_con.di_ex_a,
+                                ah_con.ex_mem_op,
+                                ah_con.ex_mem_a,
+                                ah_con.mem_re_op,
+                                ah_con.mem_re_a,
                                 ah_con.li_di_op,
                                 ah_con.li_di_b,
                                 ah_con.li_di_c,
@@ -357,6 +351,12 @@ begin
   C_out <= mem_re_con.c_out;
 
   ah_con.clk <= CLK;
+  ah_con.di_ex_op <= di_ex_con.op_out;
+  ah_con.di_ex_a <= di_ex_con.a_out;
+  ah_con.ex_mem_op <= ex_mem_con.op_out;
+  ah_con.ex_mem_a <= ex_mem_con.a_out;
+  ah_con.mem_re_op <= mem_re_con.op_out;
+  ah_con.mem_re_a <= mem_re_con.a_out;
   ah_con.li_di_op <= li_di_con.op_out;
   ah_con.li_di_b <= li_di_con.b_out;
   ah_con.li_di_c <= li_di_con.c_out;

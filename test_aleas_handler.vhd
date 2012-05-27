@@ -41,8 +41,12 @@ ARCHITECTURE behavior OF test_aleas_handler IS
  
     COMPONENT aleas_handler
     PORT(
-         op_in : IN  std_logic_vector(7 downto 0);
-         a_in : IN  std_logic_vector(7 downto 0);
+         di_ex_op : IN  STD_LOGIC_VECTOR (7 downto 0);
+         di_ex_a : IN  STD_LOGIC_VECTOR (7 downto 0);
+         ex_mem_op : IN  STD_LOGIC_VECTOR (7 downto 0);
+         ex_mem_a : IN  STD_LOGIC_VECTOR (7 downto 0);
+         mem_re_op : IN  STD_LOGIC_VECTOR (7 downto 0);
+         mem_re_a : IN  STD_LOGIC_VECTOR (7 downto 0);
          li_di_op : IN  std_logic_vector(7 downto 0);
          li_di_b : IN  std_logic_vector(7 downto 0);
          li_di_c : IN  std_logic_vector(7 downto 0);
@@ -54,8 +58,12 @@ ARCHITECTURE behavior OF test_aleas_handler IS
     
 
    --Inputs
-   signal a_in : std_logic_vector(7 downto 0) := (others => '0');
-   signal op_in : std_logic_vector(7 downto 0) := (others => '0');
+   signal di_ex_op : std_logic_vector(7 downto 0) := (others => '0');
+   signal di_ex_a : std_logic_vector(7 downto 0) := (others => '0');
+   signal ex_mem_op : std_logic_vector(7 downto 0) := (others => '0');
+   signal ex_mem_a : std_logic_vector(7 downto 0) := (others => '0');
+   signal mem_re_op : std_logic_vector(7 downto 0) := (others => '0');
+   signal mem_re_a : std_logic_vector(7 downto 0) := (others => '0');
    signal li_di_b : std_logic_vector(7 downto 0) := (others => '0');
    signal li_di_c : std_logic_vector(7 downto 0) := (others => '0');
    signal li_di_op : std_logic_vector(7 downto 0) := (others => '0');
@@ -72,8 +80,8 @@ BEGIN
  
 	-- Instantiate the Unit Under Test (UUT)
    uut: aleas_handler PORT MAP (
-          op_in => op_in,
-          a_in => a_in,
+          di_ex_op => di_ex_op,
+          di_ex_a => di_ex_a,
           li_di_op => li_di_op,
           li_di_b => li_di_b,
           li_di_c => li_di_c,
@@ -84,8 +92,8 @@ BEGIN
 
 	clk <= not clk after CLK_period/2;
   
-	a_in <= x"00", x"00" after 10 ns, x"00" after 20 ns, x"00" after 30 ns;
-	op_in <= x"06", x"06" after 10 ns, x"06" after 20 ns, x"00" after 30 ns;
+	di_ex_a <= x"00", x"00" after 10 ns, x"00" after 20 ns, x"00" after 30 ns;
+	di_ex_op <= x"06", x"06" after 10 ns, x"06" after 20 ns, x"00" after 30 ns;
 	li_di_b <= x"00", x"00" after 10 ns, x"01" after 20 ns, x"00" after 30 ns;
 	li_di_c <= x"00", x"00" after 10 ns, x"00" after 20 ns, x"00" after 30 ns;
 	li_di_op <= x"05", x"01" after 10 ns, x"05" after 20 ns, x"00" after 30 ns;
