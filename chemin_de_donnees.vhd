@@ -124,6 +124,7 @@ architecture Behavioral of chemin_de_donnees is
                                  mem_re_op : in  STD_LOGIC_VECTOR (7 downto 0);
                                  mem_re_a : in  STD_LOGIC_VECTOR (7 downto 0);
                                  li_di_op : in  STD_LOGIC_VECTOR (7 downto 0);
+                                 li_di_a : in  STD_LOGIC_VECTOR (7 downto 0);
                                  li_di_b : in  STD_LOGIC_VECTOR (7 downto 0);
                                  li_di_c : in  STD_LOGIC_VECTOR (7 downto 0);
                                  clk : in  STD_LOGIC;
@@ -171,6 +172,7 @@ architecture Behavioral of chemin_de_donnees is
     mem_re_op : STD_LOGIC_VECTOR (7 downto 0);
     mem_re_a : STD_LOGIC_VECTOR (7 downto 0);
     li_di_op : STD_LOGIC_VECTOR (7 downto 0);
+    li_di_a : STD_LOGIC_VECTOR (7 downto 0);
     li_di_b : STD_LOGIC_VECTOR (7 downto 0);
     li_di_c : STD_LOGIC_VECTOR (7 downto 0);
     clk : STD_LOGIC;
@@ -316,6 +318,7 @@ begin
                                 ah_con.mem_re_op,
                                 ah_con.mem_re_a,
                                 ah_con.li_di_op,
+                                ah_con.li_di_a,
                                 ah_con.li_di_b,
                                 ah_con.li_di_c,
                                 ah_con.clk,
@@ -358,6 +361,7 @@ begin
   ah_con.mem_re_op <= mem_re_con.op_out;
   ah_con.mem_re_a <= mem_re_con.a_out;
   ah_con.li_di_op <= li_di_con.op_out;
+  ah_con.li_di_a <= li_di_con.a_out;
   ah_con.li_di_b <= li_di_con.b_out;
   ah_con.li_di_c <= li_di_con.c_out;
 
