@@ -41,11 +41,11 @@ ARCHITECTURE behavior OF test_aleas_handler IS
  
     COMPONENT aleas_handler
     PORT(
-         a_in : IN  std_logic_vector(7 downto 0);
          op_in : IN  std_logic_vector(7 downto 0);
+         a_in : IN  std_logic_vector(7 downto 0);
+         li_di_op : IN  std_logic_vector(7 downto 0);
          li_di_b : IN  std_logic_vector(7 downto 0);
          li_di_c : IN  std_logic_vector(7 downto 0);
-         li_di_op : IN  std_logic_vector(7 downto 0);
          clk : IN  std_logic;
          clk_out : OUT  std_logic;
          li_di_op_out : OUT  std_logic_vector(7 downto 0)
@@ -72,11 +72,11 @@ BEGIN
  
 	-- Instantiate the Unit Under Test (UUT)
    uut: aleas_handler PORT MAP (
-          a_in => a_in,
           op_in => op_in,
+          a_in => a_in,
+          li_di_op => li_di_op,
           li_di_b => li_di_b,
           li_di_c => li_di_c,
-          li_di_op => li_di_op,
           clk => clk,
           clk_out => clk_out,
           li_di_op_out => li_di_op_out

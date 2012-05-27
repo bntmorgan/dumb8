@@ -30,14 +30,14 @@ use IEEE.STD_LOGIC_1164.ALL;
 --use UNISIM.VComponents.all;
 
 entity first_no_nop_op_and_a is
-    Port ( di_ex_a : in  STD_LOGIC_VECTOR (7 downto 0);
-           di_ex_op : in  STD_LOGIC_VECTOR (7 downto 0);
-           ex_mem_a : in  STD_LOGIC_VECTOR (7 downto 0);
+    Port ( di_ex_op : in  STD_LOGIC_VECTOR (7 downto 0);
+           di_ex_a : in  STD_LOGIC_VECTOR (7 downto 0);
            ex_mem_op : in  STD_LOGIC_VECTOR (7 downto 0);
-           mem_re_a : in  STD_LOGIC_VECTOR (7 downto 0);
+           ex_mem_a : in  STD_LOGIC_VECTOR (7 downto 0);
            mem_re_op : in  STD_LOGIC_VECTOR (7 downto 0);
-           a_out : out  STD_LOGIC_VECTOR (7 downto 0);
-           op_out : out  STD_LOGIC_VECTOR (7 downto 0));
+           mem_re_a : in  STD_LOGIC_VECTOR (7 downto 0);
+           op_out : out  STD_LOGIC_VECTOR (7 downto 0);
+           a_out : out  STD_LOGIC_VECTOR (7 downto 0));
 end first_no_nop_op_and_a;
 
 architecture Behavioral of first_no_nop_op_and_a is

@@ -30,11 +30,11 @@ use IEEE.STD_LOGIC_1164.ALL;
 --use UNISIM.VComponents.all;
 
 entity aleas_handler is
-    Port ( a_in : in  STD_LOGIC_VECTOR (7 downto 0);
-           op_in : in  STD_LOGIC_VECTOR (7 downto 0);
+    Port ( op_in : in  STD_LOGIC_VECTOR (7 downto 0);
+           a_in : in  STD_LOGIC_VECTOR (7 downto 0);
+           li_di_op : in  STD_LOGIC_VECTOR (7 downto 0);
            li_di_b : in  STD_LOGIC_VECTOR (7 downto 0);
            li_di_c : in  STD_LOGIC_VECTOR (7 downto 0);
-           li_di_op : in  STD_LOGIC_VECTOR (7 downto 0);
            clk : in  STD_LOGIC;
            clk_out : out  STD_LOGIC;
            li_di_op_out : out  STD_LOGIC_VECTOR (7 downto 0));

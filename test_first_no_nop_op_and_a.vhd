@@ -41,14 +41,14 @@ ARCHITECTURE behavior OF test_first_no_nop_op_and_a IS
  
     COMPONENT first_no_nop_op_and_a
     PORT(
-         di_ex_a : IN  std_logic_vector(7 downto 0);
          di_ex_op : IN  std_logic_vector(7 downto 0);
-         ex_mem_a : IN  std_logic_vector(7 downto 0);
+         di_ex_a : IN  std_logic_vector(7 downto 0);
          ex_mem_op : IN  std_logic_vector(7 downto 0);
-         mem_re_a : IN  std_logic_vector(7 downto 0);
+         ex_mem_a : IN  std_logic_vector(7 downto 0);
          mem_re_op : IN  std_logic_vector(7 downto 0);
-         a_out : OUT  std_logic_vector(7 downto 0);
+         mem_re_a : IN  std_logic_vector(7 downto 0);
          op_out : OUT  std_logic_vector(7 downto 0)
+         a_out : OUT  std_logic_vector(7 downto 0);
         );
     END COMPONENT;
     
@@ -71,14 +71,14 @@ BEGIN
  
 	-- Instantiate the Unit Under Test (UUT)
    uut: first_no_nop_op_and_a PORT MAP (
-          di_ex_a => di_ex_a,
           di_ex_op => di_ex_op,
-          ex_mem_a => ex_mem_a,
+          di_ex_a => di_ex_a,
           ex_mem_op => ex_mem_op,
-          mem_re_a => mem_re_a,
+          ex_mem_a => ex_mem_a,
           mem_re_op => mem_re_op,
-          a_out => a_out,
+          mem_re_a => mem_re_a,
           op_out => op_out
+          a_out => a_out,
         );
 
 	di_ex_op <= x"01", x"00" after 10ns;

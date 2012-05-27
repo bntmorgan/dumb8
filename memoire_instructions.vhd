@@ -37,6 +37,12 @@ architecture Behavioral of memoire_instructions is
   type memory_array is array (0 to 255) of STD_LOGIC_VECTOR (7 downto 0);
   --Memoire des instruction supposée ROM
   signal memoire : memory_array := (
+                                    -- Test ALEAS
+                                    -- Affectation de R0 avec x"02"
+                                    x"06",x"00",x"02",x"00",
+                                    -- Copie de R0 dans R1
+                                    x"05",x"01",x"00",x"00",
+
                                     -- Affectation de R0 avec x"02"
                                     x"06",x"00",x"02",x"00",
                                     -- Affectation de R1 avec x"05"

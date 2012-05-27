@@ -107,15 +107,33 @@ architecture Behavioral of chemin_de_donnees is
   component op_to_rw_memoire_donnees port ( Op : in  STD_LOGIC_VECTOR (7 downto 0);
                                             RW : out  STD_LOGIC);
   end component;
-  component mux_out_memoire_donnees port ( DOUT : in  STD_LOGIC_VECTOR (7 downto 0);
-                                           B_IN : in  STD_LOGIC_VECTOR (7 downto 0);
-                                           Op : in  STD_LOGIC_VECTOR (7 downto 0);
+  component mux_out_memoire_donnees port ( DOUT  : in  STD_LOGIC_VECTOR (7 downto 0);
+                                           B_IN  : in  STD_LOGIC_VECTOR (7 downto 0);
+                                           Op    : in  STD_LOGIC_VECTOR (7 downto 0);
                                            B_OUT : out  STD_LOGIC_VECTOR (7 downto 0));
   end component;
-  component mux_in_memoire_donnees port ( A : in  STD_LOGIC_VECTOR (7 downto 0);
-                                          Op : in  STD_LOGIC_VECTOR (7 downto 0);
-                                          B : in  STD_LOGIC_VECTOR (7 downto 0);
+  component mux_in_memoire_donnees port ( A   : in  STD_LOGIC_VECTOR (7 downto 0);
+                                          Op  : in  STD_LOGIC_VECTOR (7 downto 0);
+                                          B   : in  STD_LOGIC_VECTOR (7 downto 0);
                                           Adr : out  STD_LOGIC_VECTOR (7 downto 0));
+  end component;
+  component first_no_nop_op_and_a port ( di_ex_op   : in  std_logic_vector (7 downto 0);
+                                         di_ex_a  : in  std_logic_vector (7 downto 0);
+                                         ex_mem_op  : in  std_logic_vector (7 downto 0);
+                                         ex_mem_a : in  std_logic_vector (7 downto 0);
+                                         mem_re_op  : in  std_logic_vector (7 downto 0);
+                                         mem_re_a : in  std_logic_vector (7 downto 0);
+                                         op_out     : out  std_logic_vector (7 downto 0);
+                                         a_out    : out  std_logic_vector (7 downto 0));
+  end component;
+  component aleas_handler port ( op_in : in  STD_LOGIC_VECTOR (7 downto 0);
+                                 a_in : in  STD_LOGIC_VECTOR (7 downto 0);
+                                 li_di_op : in  STD_LOGIC_VECTOR (7 downto 0);
+                                 li_di_b : in  STD_LOGIC_VECTOR (7 downto 0);
+                                 li_di_c : in  STD_LOGIC_VECTOR (7 downto 0);
+                                 clk : in  STD_LOGIC;
+                                 clk_out : out  STD_LOGIC;
+                                 li_di_op_out : out  STD_LOGIC_VECTOR (7 downto 0));
   end component;
 
   -- Déclaration des signaux entrée et sortie du pipeline : plus propre
@@ -149,6 +167,17 @@ architecture Behavioral of chemin_de_donnees is
     clk : STD_LOGIC;
     dout : STD_LOGIC_VECTOR(7 downto 0);
   end record;
+
+  type aleas_handler_in_out is record
+    op_in : STD_LOGIC_VECTOR (7 downto 0);
+    a_in : STD_LOGIC_VECTOR (7 downto 0);
+    li_di_op : STD_LOGIC_VECTOR (7 downto 0);
+    li_di_b : STD_LOGIC_VECTOR (7 downto 0);
+    li_di_c : STD_LOGIC_VECTOR (7 downto 0);
+    clk : STD_LOGIC;
+    clk_out : STD_LOGIC;
+    li_di_op_out : STD_LOGIC_VECTOR (7 downto 0);
+  end record;
     
   -- Entrées et sorties des pipelines
   
@@ -162,6 +191,9 @@ architecture Behavioral of chemin_de_donnees is
 
   -- Entrées et sorties de la mémoire de données
   signal md_con : memoire_donnees_in_out;
+
+  -- Entrées et sorties du handler d'aleas
+  signal ah_con : aleas_handler_in_out;
 
   -- Sortie de la LC après le dernier pipeline
   signal W : STD_LOGIC;
@@ -204,7 +236,7 @@ begin
                                li_di_con.a_out, 
                                li_di_con.b_out, 
                                li_di_con.c_out,
-                               CLK,
+                               ah_con.clk_out,
                                RST);
 
   sipDI_EX : pipeline port map ( di_ex_con.op_in, 
@@ -278,13 +310,31 @@ begin
                                            ex_mem_con.b_out,
                                            md_con.adr);
 
+  fnnoaa : first_no_nop_op_and_a port map ( di_ex_con.op_out,
+                                            di_ex_con.a_out,
+                                            ex_mem_con.op_out,
+                                            ex_mem_con.a_out,
+                                            mem_re_con.op_out,
+                                            mem_re_con.a_out,
+                                            ah_con.op_in,
+                                            ah_con.a_in);
+
+  ah : aleas_handler port map ( ah_con.op_in,
+                                ah_con.a_in,
+                                ah_con.li_di_op,
+                                ah_con.li_di_b,
+                                ah_con.li_di_c,
+                                ah_con.clk,
+                                ah_con.clk_out,
+                                ah_con.li_di_op_out);
+
   -- Interconnexion des composants
   li_di_con.op_in <= Op;
   li_di_con.a_in <= A;
   li_di_con.b_in <= B;
   li_di_con.c_in <= C;
   
-  di_ex_con.op_in <= li_di_con.op_out;
+  di_ex_con.op_in <= ah_con.li_di_op_out;
   di_ex_con.a_in <= li_di_con.a_out;
   di_ex_con.b_in <= msbr_out;
   di_ex_con.c_in <= QB;
@@ -306,12 +356,17 @@ begin
   B_out <= mem_re_con.b_out;
   C_out <= mem_re_con.c_out;
 
+  ah_con.clk <= CLK;
+  ah_con.li_di_op <= li_di_con.op_out;
+  ah_con.li_di_b <= li_di_con.b_out;
+  ah_con.li_di_c <= li_di_con.c_out;
+
   -- Compteur incrémentant de 4 le Pointer Instruction
-  ip : compteur port map (CLK, SENS, LOAD, RST, EN, din_cpt, instruction_pointer);
-  mi : memoire_instructions port map (instruction_pointer, CLK, instruction);
+  ip : compteur port map (ah_con.clk_out, SENS, LOAD, RST, EN, din_cpt, instruction_pointer);
+  mi : memoire_instructions port map (instruction_pointer, ah_con.clk_out, instruction);
   -- Decodeur d'instructions
   di : decode port map (instruction, Op, A, B, C);
   br : banc_registres port map (li_di_con.b_out(3 downto 0), li_di_con.c_out(3 downto 0), A_out(3 downto 0), W, B_out, RST, CLK, QA, QB);
-  msbr : mux_out_br port map( li_di_con.op_out, li_di_con.b_out, QA, msbr_out);
+  msbr : mux_out_br port map(ah_con.li_di_op_out, li_di_con.b_out, QA, msbr_out);
 
 end Behavioral;
