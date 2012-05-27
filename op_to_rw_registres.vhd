@@ -37,12 +37,22 @@ end op_to_rw_registres;
 architecture Behavioral of op_to_rw_registres is
 
 begin
+
   with op select
        -- Ecriture dans les cas suivants
        -- AFC
   w <= '1' when x"05",
        -- COP
        '1' when x"06",
+       -- ADD
+       '1' when x"01",
+       -- SHL
+       '1' when x"02",
+       -- SOU
+       '1' when x"03",
+       -- SHR
+       '1' when x"04",
+       -- LOAD
        '1' when x"07",
        '0' when others;
 
