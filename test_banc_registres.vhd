@@ -59,7 +59,7 @@ ARCHITECTURE behavior OF test_banc_registres IS
    signal W : std_logic := '0';
    signal DATA : std_logic_vector(7 downto 0) := (others => '0');
    signal RST : std_logic := '0';
-   signal CLK : std_logic := '1';
+   signal CLK : std_logic := '0';
 
  	--Outputs
    signal QA : std_logic_vector(7 downto 0);

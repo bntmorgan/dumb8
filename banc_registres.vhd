@@ -46,37 +46,28 @@ architecture Behavioral of banc_registres is
   signal registres : register_array := (others => x"00");
                                     
 begin
+  
+  QA <= x"00" when RST = '0' else
+        DATA when W = '1' and Adr_A = Adr_W else 
+        registres(conv_integer("0" & Adr_A));
+
+  QB <= x"00" when RST = '0' else
+        DATA when W = '1' and Adr_B = Adr_W else 
+        registres(conv_integer("0" & Adr_B));
+  
   process(CLK)
   begin
     -- RST actif à '0' et synchrone avec l'horloge
     if CLK'event and CLK='1' then
       if RST = '0' then 
         registres <= (others => x"00");
-        QA <= x"00";
-        QB <= x"00";
       else
-        -- Dans tous les cas on écrit en sortie
-        QA <= registres(conv_integer("0" & Adr_A));
-        QB <= registres(conv_integer("0" & Adr_B));
-        -- Cas de l'aléa : écriture et lecture simultanees
-        if W='1' and Adr_A = Adr_W then
+        -- Cas général d'écriture dans un registre
+        if W='1' then
           registres(conv_integer("0" & Adr_W)) <= DATA;
-          QA <= DATA;
-        else 
-          -- Cas de l'aléa
-          if W='1' and Adr_B = Adr_W then
-            registres(conv_integer("0" & Adr_W)) <= DATA;
-            QB <= DATA;
-          else
-            -- Cas général d'écriture dans un registre
-            if W='1' then
-              registres(conv_integer("0" & Adr_W)) <= DATA;
-            end if;
-          end if;          
         end if;
       end if;
     end if;
-    
-
   end process;
+
 end Behavioral;

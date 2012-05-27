@@ -79,7 +79,7 @@ BEGIN
   RST <= '1', '0' after 50 ns;
 	Din <= x"A0", x"B3" after 10 ns, x"42" after 20 ns, 
                 x"D2" after 30 ns, x"B3" after 40 ns, x"9F" after 50 ns;
-	RW <= '1', '0' after 40 ns, '1' after 50 ns;
+	RW <= '0', '1' after 40 ns, '0' after 50 ns;
 	Adr <= x"00", x"01" after 10 ns, x"01" after 20 ns, x"02" after 30 ns,
                 x"01" after 40 ns, x"01" after 50 ns, x"02" after 60 ns;
 

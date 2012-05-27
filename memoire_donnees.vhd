@@ -40,19 +40,19 @@ architecture Behavioral of memoire_donnees is
   type memory_array is array (0 to 255) of STD_LOGIC_VECTOR (7 downto 0);
   signal memoire : memory_array := (others => x"00");
 begin
+  -- Cas de lecture de la memoire
+  DOUT <= x"00" when RST = '0' else 
+          memoire(conv_integer("0" & Adr)) when RW = '1';
+
   process(CLK)
   begin
     if CLK'event and CLK='1' then
       if RST = '0' then
         memoire <= (others => x"00");
-        DOUT <= x"00";
       else
         -- Ecriture lorsque RW = '0'
-        if RW='0' then
+        if RW = '0' then
           memoire(conv_integer("0" & Adr)) <= DIN;
-        else
-          -- Cas de lecture de la memoire
-          DOUT <= memoire(conv_integer("0" & Adr));
         end if;
       end if;
     end if;
