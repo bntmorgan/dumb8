@@ -9,7 +9,7 @@
 -- Project Name: 
 -- Target Devices: 
 -- Tool versions: 
--- Description:    Pipeline du chemin de donnÃ©es de notre microprocesseur
+-- Description:    Pipeline du chemin de données de notre microprocesseur
 --
 -- Dependencies: 
 --
@@ -29,15 +29,16 @@ use IEEE.STD_LOGIC_UNSIGNED.ALL;
 --use UNISIM.VComponents.all;
 
 entity pipeline is
-  Port ( Op       : in  STD_LOGIC_VECTOR (7 downto 0);
-         A      : in  STD_LOGIC_VECTOR (7 downto 0);
+  Port ( Op      : in  STD_LOGIC_VECTOR (7 downto 0);
+         A       : in  STD_LOGIC_VECTOR (7 downto 0);
          B       : in  STD_LOGIC_VECTOR (7 downto 0);
          C       : in  STD_LOGIC_VECTOR (7 downto 0);
-         Op_out   : out  STD_LOGIC_VECTOR (7 downto 0);
-         A_out  : out  STD_LOGIC_VECTOR (7 downto 0);
+         Op_out  : out  STD_LOGIC_VECTOR (7 downto 0);
+         A_out   : out  STD_LOGIC_VECTOR (7 downto 0);
          B_out   : out  STD_LOGIC_VECTOR (7 downto 0);
          C_out   : out  STD_LOGIC_VECTOR (7 downto 0);
          CLK     : in  STD_LOGIC;
+         en      : in  STD_LOGIC;
          RST     : in  STD_LOGIC);
 end pipeline;
 
@@ -45,21 +46,27 @@ architecture Behavioral of pipeline is
 
 begin
 
-  process
+
+    
+  process(CLK, en, RST)
     begin
-      wait until CLK'event and CLK='1';
       if RST='0' then
-        Op_out <= x"00";
-        A_out <= x"00";
-        B_out <= x"00";
-        C_out <= x"00";
-      else
-        -- Copie des entrÃ©es en sortie
-        Op_out <= Op;
-        A_out <= A;
-        B_out <= B;
-        C_out <= C;
+          Op_out <= x"00";
+          A_out <= x"00";
+          B_out <= x"00";
+          C_out <= x"00";
+      else 
+        if en='1' then
+          if CLK='1' then
+            -- Copie des entrées en sortie
+            Op_out <= Op;
+            A_out <= A;
+            B_out <= B;
+            C_out <= C;
+          end if;
+        end if;
       end if;
   end process;
 
 end Behavioral;
+

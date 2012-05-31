@@ -30,6 +30,7 @@ use IEEE.STD_LOGIC_UNSIGNED.ALL;
 entity memoire_instructions is
 Port ( Adr : in  STD_LOGIC_VECTOR (7 downto 0);
        CLK : in STD_LOGIC;
+       en : in STD_LOGIC; 
        DOUT : out STD_LOGIC_VECTOR (31 downto 0));
 end memoire_instructions;
 
@@ -46,11 +47,13 @@ architecture Behavioral of memoire_instructions is
                                     x"07",x"01",x"00",x"00",
                                     others =>x"00");
 begin
-  process(CLK)
+  process(CLK, en)
   begin
-    if CLK'event and CLK='1' then
-      DOUT <= memoire(conv_integer("0" & Adr)) & memoire(conv_integer("0" & Adr)+1) 
-              & memoire(conv_integer("0" & Adr)+2) & memoire(conv_integer("0" & Adr)+3);
+    if en = '1' then
+      if CLK='1' then
+        DOUT <= memoire(conv_integer("0" & Adr)) & memoire(conv_integer("0" & Adr)+1) 
+                & memoire(conv_integer("0" & Adr)+2) & memoire(conv_integer("0" & Adr)+3);
+       end if;
     end if;
   end process;
 end Behavioral;

@@ -39,15 +39,15 @@ architecture Behavioral of compteur is
 signal cpt: STD_LOGIC_VECTOR(7 downto 0);
 begin
 
-	process (RST ,CLK)
+	process (RST ,CLK, EN)
 	begin
 	if RST ='0' then cpt <= X"00" ; -- rst asynchrone : a cause du bouton
 	else		
-		if CLK'event and CLK='1' then
+		if CLK='1' then
 			if LOAD = '1' then
 				cpt <= Din;
 			else
-				if EN = '0' then
+				if EN = '1' then
 					if SENS = '1' then cpt <= cpt + 4; end if;
 					if SENS = '0' then cpt <= cpt - 4; end if;
 				end if;

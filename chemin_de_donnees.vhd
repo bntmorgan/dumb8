@@ -29,7 +29,8 @@ use IEEE.STD_LOGIC_UNSIGNED.ALL;
 
 entity chemin_de_donnees is
   port (CLK : in STD_LOGIC;
-        RST : in STD_LOGIC);
+        RST : in STD_LOGIC;
+        LED : out STD_LOGIC_VECTOR(7 downto 0));
 
 end chemin_de_donnees;
 
@@ -56,6 +57,7 @@ architecture Behavioral of chemin_de_donnees is
   end component;
   component memoire_instructions port ( Adr : in  STD_LOGIC_VECTOR (7 downto 0);
                                         CLK : in STD_LOGIC;
+                                        en : in STD_LOGIC;
                                         DOUT : out STD_LOGIC_VECTOR (31 downto 0));
   end component;
   component pipeline port ( Op     : in  STD_LOGIC_VECTOR (7 downto 0);
@@ -67,6 +69,7 @@ architecture Behavioral of chemin_de_donnees is
                             B_out  : out  STD_LOGIC_VECTOR (7 downto 0);
                             C_out  : out  STD_LOGIC_VECTOR (7 downto 0);
                             CLK    : in  STD_LOGIC;
+                            en     : in STD_LOGIC;
                             RST    : in  STD_LOGIC);
   end component;
   component memoire_donnees port ( Adr : in  STD_LOGIC_VECTOR (7 downto 0);
@@ -128,7 +131,7 @@ architecture Behavioral of chemin_de_donnees is
                                  li_di_b : in  STD_LOGIC_VECTOR (7 downto 0);
                                  li_di_c : in  STD_LOGIC_VECTOR (7 downto 0);
                                  clk : in  STD_LOGIC;
-                                 clk_out : out  STD_LOGIC;
+                                 en : out  STD_LOGIC;
                                  li_di_op_out : out  STD_LOGIC_VECTOR (7 downto 0));
   end component;
 
@@ -176,7 +179,7 @@ architecture Behavioral of chemin_de_donnees is
     li_di_b : STD_LOGIC_VECTOR (7 downto 0);
     li_di_c : STD_LOGIC_VECTOR (7 downto 0);
     clk : STD_LOGIC;
-    clk_out : STD_LOGIC;
+    en : STD_LOGIC;
     li_di_op_out : STD_LOGIC_VECTOR (7 downto 0);
   end record;
     
@@ -225,7 +228,7 @@ architecture Behavioral of chemin_de_donnees is
   signal A_out : STD_LOGIC_VECTOR (7 downto 0);
   signal B_out : STD_LOGIC_VECTOR (7 downto 0);
   signal C_out : STD_LOGIC_VECTOR (7 downto 0);
-  
+   
 begin
   -- Pipelines
 
@@ -237,7 +240,8 @@ begin
                                li_di_con.a_out, 
                                li_di_con.b_out, 
                                li_di_con.c_out,
-                               ah_con.clk_out,
+                               CLK,
+                               ah_con.en,
                                RST);
 
   sipDI_EX : pipeline port map ( di_ex_con.op_in, 
@@ -249,6 +253,7 @@ begin
                                  di_ex_con.b_out, 
                                  di_ex_con.c_out,
                                  CLK,
+                                 '1',
                                  RST);
 
   pEX_Mem : pipeline port map ( ex_mem_con.op_in, 
@@ -260,6 +265,7 @@ begin
                                 ex_mem_con.b_out, 
                                 ex_mem_con.c_out,
                                 CLK,
+                                '1',
                                 RST);
 
   pMem_Re : pipeline port map ( mem_re_con.op_in, 
@@ -271,6 +277,7 @@ begin
                                 mem_re_con.b_out, 
                                 mem_re_con.c_out,
                                 CLK,
+                                '1',
                                 RST);
 
   rw_r : op_to_rw_registres port map (Op_out, W);
@@ -322,7 +329,7 @@ begin
                                 ah_con.li_di_b,
                                 ah_con.li_di_c,
                                 ah_con.clk,
-                                ah_con.clk_out,
+                                ah_con.en,
                                 ah_con.li_di_op_out);
 
   -- Interconnexion des composants
@@ -366,11 +373,13 @@ begin
   ah_con.li_di_c <= li_di_con.c_out;
 
   -- Compteur incrémentant de 4 le Pointer Instruction
-  ip : compteur port map (ah_con.clk_out, SENS, LOAD, RST, EN, din_cpt, instruction_pointer);
-  mi : memoire_instructions port map (instruction_pointer, ah_con.clk_out, instruction);
+  ip : compteur port map (CLK, SENS, LOAD, RST, ah_con.en, din_cpt, instruction_pointer);
+  mi : memoire_instructions port map (instruction_pointer, CLK, ah_con.en, instruction);
   -- Decodeur d'instructions
   di : decode port map (instruction, Op, A, B, C);
   br : banc_registres port map (li_di_con.b_out(3 downto 0), li_di_con.c_out(3 downto 0), A_out(3 downto 0), W, B_out, RST, CLK, QA, QB);
   msbr : mux_out_br port map(li_di_con.op_out, li_di_con.b_out, QA, msbr_out);
+
+  LED <= alu_con.s;
 
 end Behavioral;
