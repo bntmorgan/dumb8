@@ -38,10 +38,8 @@ architecture Behavioral of mux_out_alu is
 
 begin
              -- Cas AFC et COP: la sortie B_out du pipeline di/ex
-             -- est recopi√©e dans l'entr√©e B_in du ex/mem
-  mux_out <= B_in when Op = x"06" or Op = x"05" else
-             -- Cas SHR, SHL, ADD, SOU
-             S when Op = x"01" or Op = x"02" or Op = x"03" or Op = x"04" else
+             -- est recopiÈe dans l'entrÈe B_in du ex/mem
+  mux_out <= S when Op = x"01" or Op = x"02" or Op = x"03" or Op = x"04" else
              B_in;
 
 end Behavioral;

@@ -32,18 +32,19 @@ use IEEE.STD_LOGIC_UNSIGNED.ALL;
 --use UNISIM.VComponents.all;
 
 entity aleas_handler is
-    Port ( di_ex_op : in  STD_LOGIC_VECTOR (7 downto 0);
-           di_ex_a : in  STD_LOGIC_VECTOR (7 downto 0);
-           ex_mem_op : in  STD_LOGIC_VECTOR (7 downto 0);
-           ex_mem_a : in  STD_LOGIC_VECTOR (7 downto 0);
-           mem_re_op : in  STD_LOGIC_VECTOR (7 downto 0);
-           mem_re_a : in  STD_LOGIC_VECTOR (7 downto 0);
-           li_di_op : in  STD_LOGIC_VECTOR (7 downto 0);
-           li_di_a : in  STD_LOGIC_VECTOR (7 downto 0);
-           li_di_b : in  STD_LOGIC_VECTOR (7 downto 0);
-           li_di_c : in  STD_LOGIC_VECTOR (7 downto 0);
-           clk : in  STD_LOGIC;
-           en : out  STD_LOGIC;
+    Port ( di_ex_op     : in  STD_LOGIC_VECTOR (7 downto 0);
+           di_ex_a      : in  STD_LOGIC_VECTOR (7 downto 0);
+           ex_mem_op    : in  STD_LOGIC_VECTOR (7 downto 0);
+           ex_mem_a     : in  STD_LOGIC_VECTOR (7 downto 0);
+           mem_re_op    : in  STD_LOGIC_VECTOR (7 downto 0);
+           mem_re_a     : in  STD_LOGIC_VECTOR (7 downto 0);
+           li_di_op     : in  STD_LOGIC_VECTOR (7 downto 0);
+           li_di_a      : in  STD_LOGIC_VECTOR (7 downto 0);
+           li_di_b      : in  STD_LOGIC_VECTOR (7 downto 0);
+           li_di_c      : in  STD_LOGIC_VECTOR (7 downto 0);
+           Z            : in  STD_LOGIC;
+           clk          : in  STD_LOGIC;
+           en           : out  STD_LOGIC;
            li_di_op_out : out  STD_LOGIC_VECTOR (7 downto 0));
 end aleas_handler;
 

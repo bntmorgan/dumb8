@@ -120,18 +120,19 @@ architecture Behavioral of chemin_de_donnees is
                                           B   : in  STD_LOGIC_VECTOR (7 downto 0);
                                           Adr : out  STD_LOGIC_VECTOR (7 downto 0));
   end component;
-  component aleas_handler port ( di_ex_op : in  STD_LOGIC_VECTOR (7 downto 0);
-                                 di_ex_a : in  STD_LOGIC_VECTOR (7 downto 0);
-                                 ex_mem_op : in  STD_LOGIC_VECTOR (7 downto 0);
-                                 ex_mem_a : in  STD_LOGIC_VECTOR (7 downto 0);
-                                 mem_re_op : in  STD_LOGIC_VECTOR (7 downto 0);
-                                 mem_re_a : in  STD_LOGIC_VECTOR (7 downto 0);
-                                 li_di_op : in  STD_LOGIC_VECTOR (7 downto 0);
-                                 li_di_a : in  STD_LOGIC_VECTOR (7 downto 0);
-                                 li_di_b : in  STD_LOGIC_VECTOR (7 downto 0);
-                                 li_di_c : in  STD_LOGIC_VECTOR (7 downto 0);
-                                 clk : in  STD_LOGIC;
-                                 en : out  STD_LOGIC;
+  component aleas_handler port ( di_ex_op     : in  STD_LOGIC_VECTOR (7 downto 0);
+                                 di_ex_a      : in  STD_LOGIC_VECTOR (7 downto 0);
+                                 ex_mem_op    : in  STD_LOGIC_VECTOR (7 downto 0);
+                                 ex_mem_a     : in  STD_LOGIC_VECTOR (7 downto 0);
+                                 mem_re_op    : in  STD_LOGIC_VECTOR (7 downto 0);
+                                 mem_re_a     : in  STD_LOGIC_VECTOR (7 downto 0);
+                                 li_di_op     : in  STD_LOGIC_VECTOR (7 downto 0);
+                                 li_di_a      : in  STD_LOGIC_VECTOR (7 downto 0);
+                                 li_di_b      : in  STD_LOGIC_VECTOR (7 downto 0);
+                                 li_di_c      : in  STD_LOGIC_VECTOR (7 downto 0);
+                                 Z            : in  STD_LOGIC;
+                                 clk          : in  STD_LOGIC;
+                                 en           : out  STD_LOGIC;
                                  li_di_op_out : out  STD_LOGIC_VECTOR (7 downto 0));
   end component;
 
@@ -328,6 +329,7 @@ begin
                                 ah_con.li_di_a,
                                 ah_con.li_di_b,
                                 ah_con.li_di_c,
+                                '1',
                                 ah_con.clk,
                                 ah_con.en,
                                 ah_con.li_di_op_out);

@@ -38,7 +38,7 @@ architecture Behavioral of mux_out_br is
 
 begin
              -- Cas AFC et LOAD: la sortie B_out du pipeline li/di
-             -- est recopiÃ©e dans l'entrÃ©e B_in du di/ex
+             -- est recopiée dans l'entrée B_in du di/ex
   mux_out <= B_in when Op = x"06" or Op = x"07" else
              -- Cas COP, SHR, SHL, ADD, SOU, STORE : le pipeline di/ex reÃ§oit 
              -- la sortie de la lecture du banc de registres
