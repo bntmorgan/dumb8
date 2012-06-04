@@ -40,14 +40,24 @@ architecture Behavioral of memoire_instructions is
   signal memoire : memory_array := (
                                     -- Test ALEAS
                                     -- Affectation de R0 avec x"02"
-                                    x"06",x"00",x"01",x"00",
-                                    x"06",x"01",x"02",x"00",
-                                    x"01",x"00",x"01",x"00",
-                                    x"08",x"00",x"00",x"00",
-                                    x"07",x"01",x"00",x"00",
+--                                    x"06",x"00",x"01",x"00",
+--                                    x"06",x"01",x"02",x"00",
+--                                    x"01",x"00",x"01",x"00",
+--                                    x"08",x"00",x"00",x"00",
+--                                    x"07",x"01",x"00",x"00",
+
+                                      x"06",x"00",x"00",x"00",
+                                      x"06",x"01",x"10",x"00",
+                                      x"06",x"02",x"01",x"00",
+												  
+                                      x"01",x"00",x"00",x"02",
+                                      x"02",x"03",x"01",x"00",
+                                      x"0A",x"1C",x"03",x"00",
+                                      x"09",x"0C",x"00",x"00",
+                                      x"09",x"1C",x"00",x"00",
                                     others =>x"00");
 begin
-  process(CLK, en)
+  process(CLK)--, en)
   begin
     if en = '1' then
       if CLK='1' then

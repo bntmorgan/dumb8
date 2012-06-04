@@ -39,9 +39,9 @@ begin
                 -- ADD
     Ctrl_Alu <= "001" when x"01",
                 -- S0U
-                "010" when x"03",
+                "010" when x"02",
                 -- SHL
-                "011" when x"02",
+                "011" when x"03",
                 -- SHR
                 "100" when x"04",
                 "000" when others;

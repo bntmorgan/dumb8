@@ -62,6 +62,6 @@ BEGIN
 
   CLK <= not CLK after CLK_period/2;
   -- Reset actif à 0
-  RST <= '1', '0' after 500 ns;
+  RST <= '1', '0' after 2200 ns;
 
 END;
