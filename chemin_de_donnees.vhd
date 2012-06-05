@@ -397,7 +397,6 @@ begin
   br : banc_registres port map (li_di_con.b_out(3 downto 0), li_di_con.c_out(3 downto 0), A_out(3 downto 0), W, B_out, RST, CLK, QA, QB);
   msbr : mux_out_br port map(li_di_con.op_out, li_di_con.b_out, QA, msbr_out);
 
-  
   jh : jmp_handler port map( di_ex_con.op_out, di_ex_con.a_out, alu_con.z, jh_con.rst, jh_con.mem_adr, jh_con.load);
 
   LED <= alu_con.s;
