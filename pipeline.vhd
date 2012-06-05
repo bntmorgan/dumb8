@@ -9,7 +9,7 @@
 -- Project Name: 
 -- Target Devices: 
 -- Tool versions: 
--- Description:    Pipeline du chemin de données de notre microprocesseur
+-- Description:    Pipeline du chemin de donnes de notre microprocesseur
 --
 -- Dependencies: 
 --
@@ -48,7 +48,7 @@ begin
 
 
     
-  process(CLK, en, RST)
+  process(CLK)
     begin
       if RST='0' then
           Op_out <= x"00";
@@ -58,7 +58,7 @@ begin
       else 
         if en='1' then
           if CLK='1' then
-            -- Copie des entrées en sortie
+            -- Copie des entres en sortie
             Op_out <= Op;
             A_out <= A;
             B_out <= B;

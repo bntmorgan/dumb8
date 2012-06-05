@@ -42,7 +42,6 @@ entity aleas_handler is
            li_di_a      : in  STD_LOGIC_VECTOR (7 downto 0);
            li_di_b      : in  STD_LOGIC_VECTOR (7 downto 0);
            li_di_c      : in  STD_LOGIC_VECTOR (7 downto 0);
-           Z            : in  STD_LOGIC;
            clk          : in  STD_LOGIC;
            en           : out  STD_LOGIC;
            li_di_op_out : out  STD_LOGIC_VECTOR (7 downto 0));
@@ -55,23 +54,15 @@ signal wait_one : STD_LOGIC;
 
 begin
 
-en <= '0' when wait_one = '1' else 
-      len;
-
-wait_one <= '1' when len = '0' else
-            '0' when wait_one = '1' and rising_edge(clk) else
-            wait_one;
+en <= len;
 
 len <= 
-  '0' when ((((((mem_re_a = li_di_b) or (mem_re_a = li_di_c)) and (li_di_op = x"01" or li_di_op = x"02" or li_di_op = x"03" or li_di_op = x"04")) or 
-      (mem_re_a = li_di_b and (li_di_op = x"05" or li_di_op = x"08"))) and 
-      (mem_re_op = x"01" or mem_re_op = x"02" or mem_re_op = x"03" or mem_re_op = x"04" or mem_re_op = x"05" or mem_re_op = x"06" or mem_re_op = x"07")) or
-    (((((ex_mem_a = li_di_b) or (ex_mem_a = li_di_c)) and (li_di_op = x"01" or li_di_op = x"02" or li_di_op = x"03" or li_di_op = x"04")) or 
-      (ex_mem_a = li_di_b and (li_di_op = x"05" or li_di_op = x"08"))) and 
+  '0' when (((((((ex_mem_a = li_di_b) or (ex_mem_a = li_di_c)) and (li_di_op = x"01" or li_di_op = x"02" or li_di_op = x"03" or li_di_op = x"04")) or 
+      (ex_mem_a = li_di_b and (li_di_op = x"05" or li_di_op = x"08" or li_di_op = x"0A" or li_di_op = x"09"))) and 
       (ex_mem_op = x"01" or ex_mem_op = x"02" or ex_mem_op = x"03" or ex_mem_op = x"04" or ex_mem_op = x"05" or ex_mem_op = x"06" or ex_mem_op = x"07")) or 
     (((((di_ex_a = li_di_b) or (di_ex_a = li_di_c)) and (li_di_op = x"01" or li_di_op = x"02" or li_di_op = x"03" or li_di_op = x"04")) or 
-      (di_ex_a = li_di_b and (li_di_op = x"05" or li_di_op = x"08"))) and 
-      (di_ex_op = x"01" or di_ex_op = x"02" or di_ex_op = x"03" or di_ex_op = x"04" or di_ex_op = x"05" or di_ex_op = x"06" or di_ex_op = x"07"))) else 
+      (di_ex_a = li_di_b and (li_di_op = x"05" or li_di_op = x"08" or li_di_op = x"0A" or li_di_op = x"09"))) and 
+      (di_ex_op = x"01" or di_ex_op = x"02" or di_ex_op = x"03" or di_ex_op = x"04" or di_ex_op = x"05" or di_ex_op = x"06" or di_ex_op = x"07")))) else 
   '1';
 
 li_di_op_out <=

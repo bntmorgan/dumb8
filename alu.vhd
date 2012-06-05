@@ -53,17 +53,17 @@ begin
              -- a * b when "011",
              
              -- Décalage à gauche
-             x"00" & A when Ctrl_Alu = "011" and B = x"00" else
+             --x"00" & A when Ctrl_Alu = "011" and B = x"00" else
              --x"00" & A(7 - conv_integer(B) downto 0) & zero(conv_integer(B)-1 downto 0) when Ctrl_Alu = "011" and B < "1000" else
-             decale(23 - conv_integer('0' & B) downto 8 - conv_integer('0' & B)) when Ctrl_Alu = "011" and B < "1000" else
+             --decale(23 - conv_integer('0' & B) downto 8 - conv_integer('0' & B)) when Ctrl_Alu = "011" and B < "1000" else
              
              -- Décalage à droite
-             x"00" & A when Ctrl_Alu = "100" and B = x"00" else
+             --x"00" & A when Ctrl_Alu = "100" and B = x"00" else
              --x"00" & zero(conv_integer(B)-1 downto 0) & A(7 downto conv_integer(B)) when Ctrl_Alu = "100" and conv_integer(B) < 8 else
-             decale(23 + conv_integer('0' & B) downto 8 + conv_integer('0' & B)) when Ctrl_Alu = "100" and conv_integer(B) < 8 else
+             --decale(23 + conv_integer('0' & B) downto 8 + conv_integer('0' & B)) when Ctrl_Alu = "100" and conv_integer(B) < 8 else
              
              -- x"00" dans le cas général
-             (x"00" & x"00");
+             (x"00" & A);
 	
   -- Affectation de l'overflow
 	with Ctrl_Alu select

@@ -32,32 +32,30 @@ entity compteur is
            RST : in  STD_LOGIC;
            EN : in  STD_LOGIC;
            Din : in  STD_LOGIC_VECTOR (7 downto 0);
-			  Dout : out STD_LOGIC_VECTOR (7 downto 0));
+			     Dout : out STD_LOGIC_VECTOR (7 downto 0));
 end compteur;
 
 architecture Behavioral of compteur is
 signal cpt: STD_LOGIC_VECTOR(7 downto 0);
 begin
 
-	process (RST ,CLK, EN)
+	process (clk)
 	begin
-	if RST ='0' then cpt <= X"00" ; -- rst asynchrone : a cause du bouton
-	else		
-		if CLK='1' then
-			if LOAD = '1' then
-				cpt <= Din;
+	if rst = '0' then
+		cpt <= x"00";
+	elsif en = '1' and clk = '1' then
+		if LOAD = '1' then
+			cpt <= Din;
+		else
+			if SENS = '1' then
+				cpt <= cpt + 4;
 			else
-				if EN = '1' then
-					if SENS = '1' then cpt <= cpt + 4; end if;
-					if SENS = '0' then cpt <= cpt - 4; end if;
-				end if;
-			end if ;
-		end if ;
+				cpt <= cpt - 4;
+			end if;
+		end if;
 	end if;
 	
 	end process;	
 	Dout <= cpt;	
-	
-	
 	
 end Behavioral;

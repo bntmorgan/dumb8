@@ -130,12 +130,18 @@ architecture Behavioral of chemin_de_donnees is
                                  li_di_a      : in  STD_LOGIC_VECTOR (7 downto 0);
                                  li_di_b      : in  STD_LOGIC_VECTOR (7 downto 0);
                                  li_di_c      : in  STD_LOGIC_VECTOR (7 downto 0);
-                                 Z            : in  STD_LOGIC;
                                  clk          : in  STD_LOGIC;
                                  en           : out  STD_LOGIC;
                                  li_di_op_out : out  STD_LOGIC_VECTOR (7 downto 0));
   end component;
-
+  component jmp_handler port ( Op      : in  STD_LOGIC_VECTOR (7 downto 0);
+                               A       : in  STD_LOGIC_VECTOR (7 downto 0);
+                               Z       : in  STD_LOGIC;
+                               RST     : out STD_LOGIC;
+                               mem_adr : out STD_LOGIC_VECTOR (7 downto 0);
+                               LOAD    : out STD_LOGIC);
+  end component;
+  
   -- Déclaration des signaux entrée et sortie du pipeline : plus propre
   type pipeline_in_out is record
     op_in : STD_LOGIC_VECTOR (7 downto 0);
@@ -184,6 +190,11 @@ architecture Behavioral of chemin_de_donnees is
     li_di_op_out : STD_LOGIC_VECTOR (7 downto 0);
   end record;
     
+  type jmp_handler_in_out is record  
+    rst     : STD_LOGIC;
+    mem_adr : STD_LOGIC_VECTOR (7 downto 0);
+    load    : STD_LOGIC;
+  end record;
   -- Entrées et sorties des pipelines
   
   signal li_di_con : pipeline_in_out;
@@ -200,6 +211,8 @@ architecture Behavioral of chemin_de_donnees is
   -- Entrées et sorties du handler d'aleas
   signal ah_con : aleas_handler_in_out;
 
+  signal jh_con : jmp_handler_in_out;
+
   -- Sortie de la LC après le dernier pipeline
   signal W : STD_LOGIC;
   
@@ -214,7 +227,7 @@ architecture Behavioral of chemin_de_donnees is
   signal QA : STD_LOGIC_VECTOR(7 downto 0);
   signal QB : STD_LOGIC_VECTOR(7 downto 0);
   
-  --Sortie du multiplexeur situé après le banc de registres
+  -- Sortie du multiplexeur situé après le banc de registres
   signal msbr_out : STD_LOGIC_VECTOR(7 downto 0);
   
   -- Instruction sortant de la mémoire d'instructions
@@ -229,10 +242,13 @@ architecture Behavioral of chemin_de_donnees is
   signal A_out : STD_LOGIC_VECTOR (7 downto 0);
   signal B_out : STD_LOGIC_VECTOR (7 downto 0);
   signal C_out : STD_LOGIC_VECTOR (7 downto 0);
-   
+  
+  signal rst_li_di : STD_LOGIC;
+  
 begin
-  -- Pipelines
+  rst_li_di <= RST and jh_con.rst;
 
+  -- Pipelines
   pLI_DI : pipeline port map ( li_di_con.op_in, 
                                li_di_con.a_in, 
                                li_di_con.b_in, 
@@ -243,7 +259,7 @@ begin
                                li_di_con.c_out,
                                CLK,
                                ah_con.en,
-                               RST);
+                               rst_li_di);
 
   sipDI_EX : pipeline port map ( di_ex_con.op_in, 
                                  di_ex_con.a_in, 
@@ -329,7 +345,6 @@ begin
                                 ah_con.li_di_a,
                                 ah_con.li_di_b,
                                 ah_con.li_di_c,
-                                '1',
                                 ah_con.clk,
                                 ah_con.en,
                                 ah_con.li_di_op_out);
@@ -375,12 +390,15 @@ begin
   ah_con.li_di_c <= li_di_con.c_out;
 
   -- Compteur incrémentant de 4 le Pointer Instruction
-  ip : compteur port map (CLK, SENS, LOAD, RST, ah_con.en, din_cpt, instruction_pointer);
+  ip : compteur port map (CLK, SENS, jh_con.load, RST, ah_con.en, jh_con.mem_adr, instruction_pointer);
   mi : memoire_instructions port map (instruction_pointer, CLK, ah_con.en, instruction);
   -- Decodeur d'instructions
   di : decode port map (instruction, Op, A, B, C);
   br : banc_registres port map (li_di_con.b_out(3 downto 0), li_di_con.c_out(3 downto 0), A_out(3 downto 0), W, B_out, RST, CLK, QA, QB);
   msbr : mux_out_br port map(li_di_con.op_out, li_di_con.b_out, QA, msbr_out);
+
+  
+  jh : jmp_handler port map( di_ex_con.op_out, di_ex_con.a_out, alu_con.z, jh_con.rst, jh_con.mem_adr, jh_con.load);
 
   LED <= alu_con.s;
 
