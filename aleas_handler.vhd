@@ -36,8 +36,6 @@ entity aleas_handler is
            di_ex_a      : in  STD_LOGIC_VECTOR (7 downto 0);
            ex_mem_op    : in  STD_LOGIC_VECTOR (7 downto 0);
            ex_mem_a     : in  STD_LOGIC_VECTOR (7 downto 0);
-           mem_re_op    : in  STD_LOGIC_VECTOR (7 downto 0);
-           mem_re_a     : in  STD_LOGIC_VECTOR (7 downto 0);
            li_di_op     : in  STD_LOGIC_VECTOR (7 downto 0);
            li_di_a      : in  STD_LOGIC_VECTOR (7 downto 0);
            li_di_b      : in  STD_LOGIC_VECTOR (7 downto 0);

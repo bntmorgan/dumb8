@@ -124,8 +124,6 @@ architecture Behavioral of chemin_de_donnees is
                                  di_ex_a      : in  STD_LOGIC_VECTOR (7 downto 0);
                                  ex_mem_op    : in  STD_LOGIC_VECTOR (7 downto 0);
                                  ex_mem_a     : in  STD_LOGIC_VECTOR (7 downto 0);
-                                 mem_re_op    : in  STD_LOGIC_VECTOR (7 downto 0);
-                                 mem_re_a     : in  STD_LOGIC_VECTOR (7 downto 0);
                                  li_di_op     : in  STD_LOGIC_VECTOR (7 downto 0);
                                  li_di_a      : in  STD_LOGIC_VECTOR (7 downto 0);
                                  li_di_b      : in  STD_LOGIC_VECTOR (7 downto 0);
@@ -179,8 +177,6 @@ architecture Behavioral of chemin_de_donnees is
     di_ex_a : STD_LOGIC_VECTOR (7 downto 0);
     ex_mem_op : STD_LOGIC_VECTOR (7 downto 0);
     ex_mem_a : STD_LOGIC_VECTOR (7 downto 0);
-    mem_re_op : STD_LOGIC_VECTOR (7 downto 0);
-    mem_re_a : STD_LOGIC_VECTOR (7 downto 0);
     li_di_op : STD_LOGIC_VECTOR (7 downto 0);
     li_di_a : STD_LOGIC_VECTOR (7 downto 0);
     li_di_b : STD_LOGIC_VECTOR (7 downto 0);
@@ -339,8 +335,6 @@ begin
                                 ah_con.di_ex_a,
                                 ah_con.ex_mem_op,
                                 ah_con.ex_mem_a,
-                                ah_con.mem_re_op,
-                                ah_con.mem_re_a,
                                 ah_con.li_di_op,
                                 ah_con.li_di_a,
                                 ah_con.li_di_b,
@@ -382,8 +376,6 @@ begin
   ah_con.di_ex_a <= di_ex_con.a_out;
   ah_con.ex_mem_op <= ex_mem_con.op_out;
   ah_con.ex_mem_a <= ex_mem_con.a_out;
-  ah_con.mem_re_op <= mem_re_con.op_out;
-  ah_con.mem_re_a <= mem_re_con.a_out;
   ah_con.li_di_op <= li_di_con.op_out;
   ah_con.li_di_a <= li_di_con.a_out;
   ah_con.li_di_b <= li_di_con.b_out;
