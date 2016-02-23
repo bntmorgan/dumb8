@@ -16,38 +16,10 @@
 -- You should have received a copy of the GNU General Public License
 -- along with dumb8.  If not, see <http://www.gnu.org/licenses/>.
 
-----------------------------------------------------------------------------------
--- Company: 
--- Engineer: 
--- 
--- Create Date:    11:57:12 05/27/2012 
--- Design Name: 
--- Module Name:    aleas_handler - Behavioral 
--- Project Name: 
--- Target Devices: 
--- Tool versions: 
--- Description: 
---
--- Dependencies: 
---
--- Revision: 
--- Revision 0.01 - File Created
--- Additional Comments: 
---
-----------------------------------------------------------------------------------
 library IEEE;
 use IEEE.STD_LOGIC_1164.ALL;
 use IEEE.STD_LOGIC_ARITH.ALL;
 use IEEE.STD_LOGIC_UNSIGNED.ALL;
-
--- Uncomment the following library declaration if using
--- arithmetic functions with Signed or Unsigned values
---use IEEE.NUMERIC_STD.ALL;
-
--- Uncomment the following library declaration if instantiating
--- any Xilinx primitives in this code.
---library UNISIM;
---use UNISIM.VComponents.all;
 
 entity aleas_handler is
     Port ( di_ex_op     : in  STD_LOGIC_VECTOR (7 downto 0);
@@ -86,6 +58,3 @@ li_di_op_out <=
   li_di_op;
 
 end Behavioral;
-
-
-

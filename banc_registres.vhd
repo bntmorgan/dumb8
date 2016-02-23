@@ -16,35 +16,10 @@
 -- You should have received a copy of the GNU General Public License
 -- along with dumb8.  If not, see <http://www.gnu.org/licenses/>.
 
-----------------------------------------------------------------------------------
--- Company:        INSA de Toulouse
--- Engineer:       Morgan Benoît
---                 Sauvanaud Carla
--- Create Date:    05/17/2012 
--- Design Name: 
--- Module Name:    banc_registres - Behavioral 
--- Project Name:   Projet systemes informatiques
---                 du compilateur vers le microprocesseur
--- Target Devices: 
--- Tool versions: 
--- Description:    Banc de registres double port de lecture de notre microprocesseur
---
--- Dependencies: 
---
--- Revision: 
--- Revision 0.01 - File Created
--- Additional Comments: 
---
-----------------------------------------------------------------------------------
 library IEEE;
 use IEEE.STD_LOGIC_1164.ALL;
 use IEEE.STD_LOGIC_ARITH.ALL;
 use IEEE.STD_LOGIC_UNSIGNED.ALL;
-
----- Uncomment the following library declaration if instantiating
----- any Xilinx primitives in this code.
---library UNISIM;
---use UNISIM.VComponents.all;
 
 entity banc_registres is
   Port ( Adr_A : in  STD_LOGIC_VECTOR (3 downto 0);

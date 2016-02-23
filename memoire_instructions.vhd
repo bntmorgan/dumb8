@@ -16,34 +16,10 @@
 -- You should have received a copy of the GNU General Public License
 -- along with dumb8.  If not, see <http://www.gnu.org/licenses/>.
 
-----------------------------------------------------------------------------------
--- Company: 
--- Engineer: 
--- 
--- Create Date:    20:26:09 05/17/2012 
--- Design Name: 
--- Module Name:    memoire_instructions - Behavioral 
--- Project Name: 
--- Target Devices: 
--- Tool versions: 
--- Description: 
---
--- Dependencies: 
---
--- Revision: 
--- Revision 0.01 - File Created
--- Additional Comments: 
---
-----------------------------------------------------------------------------------
 library IEEE;
 use IEEE.STD_LOGIC_1164.ALL;
 use IEEE.STD_LOGIC_ARITH.ALL;
 use IEEE.STD_LOGIC_UNSIGNED.ALL;
-
----- Uncomment the following library declaration if instantiating
----- any Xilinx primitives in this code.
---library UNISIM;
---use UNISIM.VComponents.all;
 
 entity memoire_instructions is
 Port ( Adr : in  STD_LOGIC_VECTOR (7 downto 0);
@@ -67,7 +43,7 @@ architecture Behavioral of memoire_instructions is
                                       x"06",x"00",x"00",x"00",
                                       x"06",x"01",x"10",x"00",
                                       x"06",x"02",x"01",x"00",
-												  
+
                                       x"01",x"00",x"00",x"02",
                                       x"02",x"03",x"01",x"00",
                                       x"0A",x"1C",x"03",x"00",

@@ -16,35 +16,10 @@
 -- You should have received a copy of the GNU General Public License
 -- along with dumb8.  If not, see <http://www.gnu.org/licenses/>.
 
-----------------------------------------------------------------------------------
--- Company:        INSA de Toulouse
--- Engineer:       Morgan Benoît
---                 Sauvanaud Carla
--- Create Date:    08:25:09 05/16/2012 
--- Design Name: 
--- Module Name:    alu - Behavioral 
--- Project Name:   Projet systemes informatiques
---                 du compilateur vers le microprocesseur
--- Target Devices: 
--- Tool versions: 
--- Description:    Unité arithmétique et logique de notre microprocesseur
---
--- Dependencies: 
---
--- Revision: 
--- Revision 0.01 - File Created
--- Additional Comments: 
---
-----------------------------------------------------------------------------------
 library IEEE;
 use IEEE.STD_LOGIC_1164.ALL;
 use IEEE.STD_LOGIC_ARITH.ALL;
 use IEEE.STD_LOGIC_UNSIGNED.ALL;
-
----- Uncomment the following library declaration if instantiating
----- any Xilinx primitives in this code.
---library UNISIM;
---use UNISIM.VComponents.all;
 
 entity alu is
     Port ( S : out  STD_LOGIC_VECTOR (7 downto 0);
