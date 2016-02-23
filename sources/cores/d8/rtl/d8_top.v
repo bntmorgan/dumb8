@@ -21,14 +21,14 @@ use IEEE.STD_LOGIC_1164.ALL;
 use IEEE.STD_LOGIC_ARITH.ALL;
 use IEEE.STD_LOGIC_UNSIGNED.ALL;
 
-entity chemin_de_donnees is
+entity d8_top is
   port (CLK : in STD_LOGIC;
         RST : in STD_LOGIC;
         LED : out STD_LOGIC_VECTOR(7 downto 0));
 
-end chemin_de_donnees;
+end d8_top;
 
-architecture Behavioral of chemin_de_donnees is
+architecture Behavioral of d8_top is
   -- Composants
   component banc_registres Port ( Adr_A : in  STD_LOGIC_VECTOR (3 downto 0);
                                   Adr_B : in  STD_LOGIC_VECTOR (3 downto 0);
