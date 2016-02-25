@@ -13,7 +13,7 @@ for f in `find . -type f | grep -i "\.\(vhd\)$"`; do
   fi
 done
 
-for f in `find . -type f | grep -i "\.\(c\|h\|v\)$"`; do
+for f in `find . -type f | grep -i "\.\(c\|h\|v\|vh\)$"`; do
   if (grep Copyright $f);then 
     echo "No need to copy the License Header to $f"
   else
