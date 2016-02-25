@@ -208,7 +208,6 @@ architecture Behavioral of d8_top is
   
   -- Signaux relatifs au compteur du pointeur d'instructions
   signal SENS : STD_LOGIC := '1';
-  signal LOAD : STD_LOGIC := '0';
   signal EN : STD_LOGIC := '0';
   signal din_cpt : STD_LOGIC_VECTOR(7 downto 0) := x"00";
   signal instruction_pointer : STD_LOGIC_VECTOR (7 downto 0) := x"00";

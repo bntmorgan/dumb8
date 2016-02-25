@@ -22,7 +22,7 @@ d		:= $(dir)
 # dir	:= $(d)/core
 # include	$(dir)/rules.mk
 
-dir	:= $(d)/dumb8
+dir	:= $(d)/d8
 include	$(dir)/rules.mk
 
 d		:= $(dirstack_$(sp))
