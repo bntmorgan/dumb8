@@ -32,6 +32,8 @@ module d8_aleas_handler (
   output en
 );
 
+`include "d8.vh"
+
 wire len;
 
 assign len =
@@ -44,63 +46,66 @@ assign len =
               (ex_mem_a == li_di_c)
             ) &
             (
-              li_di_op == 8'h01 |
-              li_di_op == 8'h02 |
-              li_di_op == 8'h03 |
-              li_di_op == 8'h04
+              li_di_op == OP_ADD |
+              li_di_op == OP_SOU |
+              li_di_op == OP_SHL |
+              li_di_op == OP_SHR |
+              li_di_op == OP_VWR
             )
           ) |
           (
             ex_mem_a == li_di_b &
             (
-              li_di_op == 8'h05 |
-              li_di_op == 8'h08 |
-              li_di_op == 8'h0A |
-              li_di_op == 8'h09
+              li_di_op == OP_COP |
+              li_di_op == OP_STR |
+              li_di_op == OP_JMZ |
+              li_di_op == OP_JMP
             )
           )
         ) &
         (
-          ex_mem_op == 8'h01 |
-          ex_mem_op == 8'h02 |
-          ex_mem_op == 8'h03 |
-          ex_mem_op == 8'h04 |
-          ex_mem_op == 8'h05 |
-          ex_mem_op == 8'h06 |
-          ex_mem_op == 8'h07
+          ex_mem_op == OP_ADD |
+          ex_mem_op == OP_SOU |
+          ex_mem_op == OP_SHL |
+          ex_mem_op == OP_SHR |
+          ex_mem_op == OP_COP |
+          ex_mem_op == OP_AFC |
+          ex_mem_op == OP_LOD
         )
       ) |
       (
         (
           (
             (
-              (di_ex_a == li_di_b) | (di_ex_a == li_di_c)
+              (di_ex_a == li_di_b) |
+              (di_ex_a == li_di_c)
             ) &
             (
-              li_di_op == 8'h01 |
-              li_di_op == 8'h02 |
-              li_di_op == 8'h03 |
-              li_di_op == 8'h04
+              li_di_op == OP_ADD |
+              li_di_op == OP_SOU |
+              li_di_op == OP_SHL |
+              li_di_op == OP_SHR |
+              li_di_op == OP_VWR
             )
           ) |
           (
             di_ex_a == li_di_b &
             (
-              li_di_op == 8'h05 |
-              li_di_op == 8'h08 |
-              li_di_op == 8'h0A |
-              li_di_op == 8'h09
+              li_di_op == OP_COP |
+              li_di_op == OP_STR |
+              li_di_op == OP_JMZ |
+              li_di_op == OP_JMP
             )
           )
         ) &
         (
-          di_ex_op == 8'h01 |
-          di_ex_op == 8'h02 |
-          di_ex_op == 8'h03 |
-          di_ex_op == 8'h04 |
-          di_ex_op == 8'h05 |
-          di_ex_op == 8'h06 |
-          di_ex_op == 8'h07
+          di_ex_op == OP_ADD |
+          di_ex_op == OP_SOU |
+          di_ex_op == OP_SHL |
+          di_ex_op == OP_SHR |
+          di_ex_op == OP_COP |
+          di_ex_op == OP_AFC |
+          di_ex_op == OP_LOD
         )
       )
     ) ? 1'b0 : 1'b1;

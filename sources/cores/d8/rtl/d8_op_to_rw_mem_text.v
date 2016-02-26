@@ -18,13 +18,13 @@ You should have received a copy of the GNU General Public License
 along with dumb8.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-module d8_op_to_rw_mem_data (
+module d8_op_to_rw_mem_text (
   input [7:0] op,
   output w
 );
 
 `include "d8.vh"
 
-assign w = (op == OP_STR) ? 1'b1 : 1'b0;
+assign w = (op == OP_VWR) ? 1'b1 : 1'b0;
 
 endmodule

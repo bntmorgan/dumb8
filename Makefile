@@ -47,6 +47,7 @@ all: targets simulations
 ################################## GLOBALS  ####################################
 
 CORES_DIR := ./sources/cores
+VGA_DIR := ./vga-text-mode/sources/cores/vga/
 XILINX := /home/bmorgan/Xilinx/14.7/ISE_DS/ISE
 XILINX_SRC := $(XILINX)/verilog/src
 

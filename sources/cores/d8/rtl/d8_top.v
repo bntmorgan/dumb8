@@ -21,7 +21,13 @@ along with dumb8.  If not, see <http://www.gnu.org/licenses/>.
 module d8_top (
   input sys_clk,
   input sys_rst,
-  output [7:0] led
+  // leds
+  output [7:0] leds,
+  // Text memory
+  output [7:0] mem_dw,
+  output [11:0] mem_a,
+  output mem_we,
+  input [7:0] mem_dr
 );
 
   // Connection wires
@@ -228,6 +234,11 @@ module d8_top (
     .w(md_w)
   );
 
+  d8_op_to_rw_mem_text otrmt (
+    .op(ex_mem_op_out),
+    .w(mem_we)
+  );
+
   d8_mux_out_mem_data momd (
     .dout(md_dout),
     .b_in(ex_mem_b_out),
@@ -290,6 +301,10 @@ module d8_top (
   assign ah_li_di_b = li_di_b_out;
   assign ah_li_di_c = li_di_c_out;
 
+  assign mem_dw = ex_mem_c_out;
+  assign mem_a = {ex_mem_b_out[3:0], ex_mem_a_out[7:0]}; // 12 bits
+  assign ex_mem_c_in = di_ex_c_out;
+
   d8_cpt8 cpt_ip (
     .sys_clk(sys_clk),
     .sys_rst(sys_rst),
@@ -345,6 +360,6 @@ module d8_top (
     .load(jh_load)
   );
 
-  assign led = alu_s;
+  assign leds = ip;
 
 endmodule

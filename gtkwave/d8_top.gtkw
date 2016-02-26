@@ -1,10 +1,10 @@
 [*]
 [*] GTKWave Analyzer v3.3.64 (w)1999-2014 BSI
-[*] Thu Feb 25 16:03:00 2016
+[*] Fri Feb 26 10:17:15 2016
 [*]
 [dumpfile] "/home/bmorgan/documents/dumb8/dumb8/binary/cores/d8/d8_top.sim.vcd"
-[dumpfile_mtime] "Thu Feb 25 15:32:21 2016"
-[dumpfile_size] 100958
+[dumpfile_mtime] "Fri Feb 26 10:15:34 2016"
+[dumpfile_size] 104306
 [savefile] "/home/bmorgan/documents/dumb8/dumb8/gtkwave/d8_top.gtkw"
 [timestart] 0
 [size] 1918 1179
@@ -476,9 +476,19 @@ main.d8.alu.o
 @22
 main.d8.alu.out[15:0]
 main.d8.alu.s[7:0]
-@29
+@28
 main.d8.alu.z
 @1000200
 -alu
+@800201
+-video_text
+@23
+main.d8.mem_a[11:0]
+main.d8.mem_dr[7:0]
+main.d8.mem_dw[7:0]
+@29
+main.d8.mem_we
+@1000201
+-video_text
 [pattern_trace] 1
 [pattern_trace] 0

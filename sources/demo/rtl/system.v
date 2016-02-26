@@ -32,10 +32,59 @@ module system (
   output [7:0] leds
 );
 
+reg vga_clk0;
+reg vga_clk;
+
+wire [7:0] mem_dw;
+wire [11:0] mem_a;
+wire mem_we;
+wire [7:0] mem_dr;
+
+task init_sys;
+begin
+  vga_clk <= 1'b1;
+  vga_clk0 <= 1'b1;
+end
+endtask
+
+// Divide sys_clk @ 100 MHz to 25 MHz
+
+always @(posedge sys_clk) begin
+  vga_clk0 <= vga_clk0 + 1'b1;
+end
+
+always @(posedge vga_clk0) begin
+  vga_clk <= vga_clk + 1'b1;
+end
+
+initial begin
+  init_sys;
+end
+
+vga_top vga (
+  .sys_clk(sys_clk),
+  .sys_rst(sys_rst),
+  .vga_clk(vga_clk),
+  .vga_rst(sys_rst),
+  .vga_red(vga_red),
+  .vga_grn(vga_grn),
+  .vga_blu(vga_blu),
+  .vga_hsync(vga_hsync),
+  .vga_vsync(vga_vsync),
+  .mem_dw(mem_dw),
+  .mem_a(mem_a),
+  .mem_we(mem_we),
+  .mem_dr(mem_dr)
+);
+
 d8_top (
-  sys_clk,
-  sys_rst,
-  leds
+  .sys_clk(sys_clk),
+  .sys_rst(sys_rst),
+  .leds(leds),
+  .mem_dw(mem_dw),
+  .mem_a(mem_a),
+  .mem_we(mem_we),
+  .mem_dr(mem_dr)
 );
 
 endmodule

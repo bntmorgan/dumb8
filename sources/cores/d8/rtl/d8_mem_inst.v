@@ -26,6 +26,8 @@ module d8_mem_inst (
   output reg [31:0] dout
 );
 
+`include "d8.vh"
+
 reg [7:0] mem [255:0];
 
 task init;
@@ -35,45 +37,60 @@ begin
     mem[i] <= 8'b0;
   end
   // instructions here
-  mem[8'h03] <= 8'h06;
+
+  // 0x0
+  mem[8'h03] <= OP_AFC;
   mem[8'h02] <= 8'h00;
   mem[8'h01] <= 8'h00;
   mem[8'h00] <= 8'h00;
 
-  mem[8'h07] <= 8'h06;
+  // 0x4
+  mem[8'h07] <= OP_AFC;
   mem[8'h06] <= 8'h01;
   mem[8'h05] <= 8'h10;
   mem[8'h04] <= 8'h00;
 
-  mem[8'h0b] <= 8'h06;
+  // 0x8
+  mem[8'h0b] <= OP_AFC;
   mem[8'h0a] <= 8'h02;
   mem[8'h09] <= 8'h01;
   mem[8'h08] <= 8'h00;
 
-  mem[8'h0f] <= 8'h01;
+  // 0xc
+  mem[8'h0f] <= OP_ADD;
   mem[8'h0e] <= 8'h00;
   mem[8'h0d] <= 8'h00;
   mem[8'h0c] <= 8'h02;
 
-  mem[8'h13] <= 8'h02;
+  // 0x10
+  mem[8'h13] <= OP_SOU;
   mem[8'h12] <= 8'h03;
   mem[8'h11] <= 8'h01;
   mem[8'h10] <= 8'h00;
 
-  mem[8'h17] <= 8'h0A;
-  mem[8'h16] <= 8'h1C;
+  // 0x14
+  mem[8'h17] <= OP_JMZ;
+  mem[8'h16] <= 8'h1c;
   mem[8'h15] <= 8'h03;
   mem[8'h14] <= 8'h00;
 
-  mem[8'h1b] <= 8'h09;
+  // 0x18
+  mem[8'h1b] <= OP_JMP;
   mem[8'h1a] <= 8'h0C;
   mem[8'h19] <= 8'h00;
   mem[8'h18] <= 8'h00;
 
-  mem[8'h1f] <= 8'h09;
-  mem[8'h1e] <= 8'h1C;
-  mem[8'h1d] <= 8'h00;
-  mem[8'h1c] <= 8'h00;
+  // 0x1c
+  mem[8'h1f] <= OP_VWR;
+  mem[8'h1e] <= 8'hff;
+  mem[8'h1d] <= 8'h01;
+  mem[8'h1c] <= 8'h01;
+
+  // 0x1c
+  mem[8'h23] <= OP_JMP;
+  mem[8'h22] <= 8'h1C;
+  mem[8'h21] <= 8'h00;
+  mem[8'h20] <= 8'h00;
 
   dout <= 32'b0;
 end

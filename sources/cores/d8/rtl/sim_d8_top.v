@@ -29,9 +29,9 @@ wire [7:0] leds;
  * Tested component
  */
 d8_top d8 (
-  sys_clk,
-  sys_rst,
-  leds
+  .sys_clk(sys_clk),
+  .sys_rst(sys_rst),
+  .leds(leds)
 );
 
 integer i;

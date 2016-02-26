@@ -25,3 +25,4 @@
 
 SRC_VERILOG_$(d) += $(d)/rtl/system.v
 SRC_VERILOG_$(d) += $(wildcard $(CORES_DIR)/d8/rtl/d8*.v)
+SRC_VERILOG_$(d) += $(wildcard $(VGA_DIR)/rtl/vga*.v)
